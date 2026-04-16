@@ -107,39 +107,119 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn-l-style { background-color: #00c300; font-family: Arial, sans-serif; font-weight: bold; font-size: 28px; }
 .btn-wa-style { background-color: #25d366; }
 .btn-wc-style { background-color: #09b83e; }
-@media (max-width: 992px) {
-    /* 1. 讓地圖分區塊強制單欄，不准一排兩個 */
+@media screen and (max-width: 992px) {
+    /* 1. 讓地圖區塊變成一排一個 */
     .map-items {
-        display: block !important; /* 取消 grid 佈局 */
-        width: 100% !important;
+        display: block !important; /* 取消原本的 Grid 併排 */
     }
 
-    /* 2. 讓每一個選項變成橫向一長條 */
     .map-item-label {
-        display: flex !important; /* 使用 flex 讓選取框跟文字並排 */
-        flex-direction: row !important; /* 強制橫向 */
-        align-items: center !important; /* 垂直置中 */
-        justify-content: flex-start !important; /* 靠左對齊 */
-        
-        padding: 12px 5px !important; /* 上下留出好點擊的空間 */
+        display: flex !important;
+        align-items: center !important; /* 勾勾跟文字對齊 */
+        padding: 12px 5px !important;
+        width: 100% !important; /* 強制佔滿一整行 */
         margin-bottom: 5px !important;
-        width: 100% !important; /* 每個景點佔滿一整行 */
-        
-        border-bottom: 1px solid #eee; /* 可選：加一條淡淡的分隔線更像 App */
-        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0; /* 加一條細線方便閱讀 */
     }
 
-    /* 3. 讓選取框跟文字之間有一點距離，且文字不要換行 */
-    .map-item-label input[type="checkbox"] {
-        margin-right: 12px !important; /* 勾選框右邊空一點 */
-        transform: scale(1.2); /* 讓勾選框在手機上大一點好點 */
+    /* 2. 讓景點報價清單也變成一排一個 */
+    .map-items-grid { /* 這裡如果你的 class 名稱不同，請確認一下 */
+        display: block !important;
     }
 
-    .map-item-label span {
+    .item {
+        display: flex !important;
+        flex-direction: row !important; /* 橫向排列 */
+        align-items: center !important;
+        padding: 15px 10px !important;
+        width: 100% !important; /* 強制一排一個 */
+        min-height: auto !important;
+        gap: 10px !important;
+    }
+
+    /* 3. 解決文字變得很窄的問題：刪除所有電腦版的預留邊距 */
+    .item h3 {
+        flex: 1 !important;
+        padding-right: 0 !important; /* 這是解決文字跑到最邊邊的關鍵 */
+        margin: 0 !important;
         font-size: 1rem !important;
-        white-space: nowrap !important; /* 防止文字太長被擠到下一行 */
-        overflow: hidden;
-        text-overflow: ellipsis; /* 文字超長顯示... */
+        white-space: normal !important;
+        text-align: left !important;
+    }
+
+    /* 4. 按鈕與價格：自動靠到最右邊，不擋字 */
+    .action {
+        position: static !important; /* 取消電腦版的絕對定位(absolute) */
+        display: flex !important;
+        margin-left: auto !important; /* 把整塊推到最右邊 */
+        width: auto !important;
+        gap: 8px !important;
+    }
+
+    /* 5. 側邊欄總計：自動排到最下方 */
+    .side {
+        position: static !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+    }
+}
+/* --- 地圖與景點區塊：一排一個 + 橫向對齊補丁 --- */
+
+/* 1. 處理地圖分區 (Map Section) */
+.map-items {
+    display: flex !important;
+    flex-direction: column !important; /* 強制垂直排列，一排一個 */
+    gap: 10px !important;
+    width: 100% !important;
+}
+
+.map-item-label {
+    display: flex !important;
+    flex-direction: row !important; /* 勾選框與文字橫向並排 */
+    align-items: center !important; /* 垂直居中對齊 */
+    justify-content: flex-start !important;
+    padding: 10px 5px !important;
+    width: 100% !important;
+    cursor: pointer;
+    border-bottom: 1px solid #eee; /* 加一條底線區分 */
+}
+
+.map-item-label input[type="checkbox"] {
+    margin: 0 12px 0 0 !important; /* 勾勾右邊留空，其餘歸零 */
+    flex-shrink: 0 !important; /* 防止勾勾被擠扁 */
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.map-item-label span {
+    font-size: 16px !important;
+    white-space: normal !important; /* 允許長字換行 */
+    line-height: 1.4 !important;
+    text-align: left !important;
+}
+
+/* 2. 處理下方景點報價清單 (Item Section) */
+@media (max-width: 992px) {
+    .item {
+        display: flex !important;
+        flex-direction: row !important; /* 橫向排列 */
+        align-items: center !important;
+        padding: 15px 10px !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+
+    .item h3 {
+        padding-right: 0 !important; /* 刪除電腦版 120px 邊距 */
+        margin: 0 !important;
+        flex: 1 !important;
+        font-size: 1rem !important;
+    }
+
+    .action {
+        position: static !important; /* 取消絕對定位 */
+        margin-left: auto !important;
+        display: flex !important;
     }
 }
 </style>
