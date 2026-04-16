@@ -107,64 +107,62 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn-l-style { background-color: #00c300; font-family: Arial, sans-serif; font-weight: bold; font-size: 28px; }
 .btn-wa-style { background-color: #25d366; }
 .btn-wc-style { background-color: #09b83e; }
+/* --- 專屬你的報價單手機版轉化邏輯 --- */
 @media screen and (max-width: 992px) {
-    /* 1. 確保景點項目是橫向排列 */
-    .item {
-        display: flex !important;
-        flex-direction: row !important; /* 強制橫向 */
-        justify-content: space-between !important;
-        align-items: center !important;
-        padding: 15px 10px !important;
+    /* 1. 讓原本左右並排的 .grid 變成上下堆疊 */
+    .grid {
+        display: block !important; /* 強制取消 grid 佈局 */
         width: 100% !important;
+    }
+
+    /* 2. 讓外層容器寬度 100% */
+    .wrap {
+        padding: 10px !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+    }
+
+    /* 3. 讓右側的摘要欄位 (.side) 不要黏住，並排到最下面 */
+    .side {
         position: relative !important;
-        margin-left: 0 !important;
-    }
-
-    /* 2. 給文字分配約 60% 的寬度，並確保它不會貼到最左邊 */
-    .item h3 {
-        flex: 1 !important; /* 自動佔滿剩餘空間 */
-        max-width: 65% !important; 
-        padding-left: 5px !important;
-        margin: 0 !important;
-        font-size: 0.95rem !important;
-        line-height: 1.3 !important;
-        white-space: normal !important; /* 允許長名稱換行，但寬度固定 */
-        text-align: left !important;
-    }
-
-    /* 3. 把原本絕對定位的按鈕區塊，改成正常的橫向排列 */
-    .action {
-        position: static !important; /* 關鍵：解除絕對定位，它才不會亂飄 */
-        width: auto !important;
-        min-width: 130px !important; /* 確保按鈕區塊有足夠寬度 */
-        display: flex !important;
-        flex-direction: row !important;
-        justify-content: flex-end !important;
-        align-items: center !important;
-        padding: 0 !important;
-        margin-left: 10px !important;
-        border: none !important;
-    }
-
-    /* 4. 縮小一點按鈕跟價格，確保在手機小螢幕塞得下 */
-    .price {
-        font-size: 0.85rem !important;
-        margin-right: 5px !important;
-        white-space: nowrap !important;
-    }
-
-    .btn-qty {
-        width: 28px !important;
-        height: 28px !important;
-        font-size: 14px !important;
-    }
-
-    /* 5. 確保整體的 .menu 不要把內容往右推 */
-    .menu {
-        padding: 5px !important;
+        top: 0 !important;
         width: 100% !important;
+        padding: 0 !important;
+        margin-top: 20px !important;
     }
-}</style>
+
+    /* 4. 讓左側選單 (.menu) 寬度 100% */
+    .menu {
+        width: 100% !important;
+        padding: 10px !important;
+    }
+
+    /* 5. 調整行程項目的間距，讓它更像 App */
+    .item {
+        flex-direction: row; /* 保持左右排但調整字體 */
+        padding: 15px 0 !important;
+    }
+
+    .item h3 {
+        font-size: 0.9rem !important;
+    }
+
+    .action {
+        min-width: 120px !important;
+    }
+
+    /* 6. 讓地圖分區變成單欄，方便閱讀 */
+    .map-items {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* 7. 修正頂部規定區塊，手機版改為上下排 */
+    .hero div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -244,16 +242,16 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="牛奶沙灘" data-en="Milk Beach"><span data-zh="牛奶沙灘" data-en="Milk Beach">牛奶沙灘</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 珍珠樂園" data-en=" VinWonders"><span data-zh=" 珍珠樂園" data-en=" VinWonders"> 珍珠樂園</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 半野生動物園" data-en=" Safari"><span data-zh="半野生動物園" data-en=" Safari"> 半野生動物園</span></label>
-                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 大世界" data-en=" Grand World"><span data-zh=" 大世界" data-en=" Grand World"> 大世界</span></label>
+                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 大世界" data-en=" Grand World"><span data-zh=" 大世界" data-en="🏛️ Grand World">🏛️ 大世界</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="碗公船(竹簍船)" data-en="Basket Boat"><span data-zh="碗公船(竹簍船)" data-en="Basket Boat">碗公船(竹簍船)</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="水舞燈光秀" data-en="Water Fountain Show"><span data-zh="水舞燈光秀" data-en="Water Fountain Show">水舞燈光秀</span></label>
-                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 賭場(Casino)" data-en=" Casino"><span data-zh=" 賭場(Casino)" data-en=" Casino"> 賭場(Casino)</span></label>
+                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 賭場(Casino)" data-en=" Casino"><span data-zh="🎰 賭場(Casino)" data-en=" Casino"> 賭場(Casino)</span></label>
                 </div>
             </div>
             <div class="map-group">
                 <span class="map-group-label">📍 <span data-zh="中部（生活 × 夜生活）" data-en="Central (Life & Nightlife)">中部（生活 × 夜生活）</span></span>
                 <div class="map-items">
-                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 超市" data-en=" Supermarket"><span data-zh=" 超市" data-en=" Supermarket"> 超市</span></label>
+                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 超市" data-en=" Supermarket"><span data-zh=" 超市" data-en="🛒 Supermarket">🛒 超市</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" Tamarind SPA" data-en=" Tamarind SPA"><span data-zh=" Tamarind SPA" data-en=" Tamarind SPA"> Tamarind SPA</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 傳統市場/夜市" data-en=" Local/Night Market"><span data-zh=" 傳統市場/夜市" data-en=" Local/Night Market"> 傳統市場、夜市</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 當地傳統工藝村" data-en=" Craft Village"><span data-zh=" 當地傳統工藝村" data-en=" Craft Village">當地傳統工藝村</span></label>
