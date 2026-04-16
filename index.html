@@ -107,71 +107,39 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn-l-style { background-color: #00c300; font-family: Arial, sans-serif; font-weight: bold; font-size: 28px; }
 .btn-wa-style { background-color: #25d366; }
 .btn-wc-style { background-color: #09b83e; }
-/* --- 官方級自動版面調整 (RWD) --- */
-@media screen and (max-width: 992px) {
-    /* 1. 骨架：從左右兩欄變成單欄垂直排列 */
-    .grid { 
-        display: block !important; 
-    }
-    
-    /* 2. 景點列表：強制一排一個，不准並排 */
+@media (max-width: 992px) {
+    /* 1. 讓地圖分區塊強制單欄，不准一排兩個 */
     .map-items {
-        grid-template-columns: 1fr !important;
-        display: block !important;
-    }
-
-    /* 3. 側邊欄（總計）：自動掉到最下面，寬度 100% */
-    .side {
-        position: static !important;
+        display: block !important; /* 取消 grid 佈局 */
         width: 100% !important;
-        margin-top: 25px !important;
-        padding: 15px !important;
     }
 
-    /* 4. 景點項目：變成 App 感的橫向長條 */
-    .item {
-        display: flex !important;
-        flex-direction: row !important; /* 橫向一排 */
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding: 15px 10px !important;
-        gap: 12px !important; /* 選取框跟文字的距離 */
-        min-height: auto !important;
-        position: relative !important;
+    /* 2. 讓每一個選項變成橫向一長條 */
+    .map-item-label {
+        display: flex !important; /* 使用 flex 讓選取框跟文字並排 */
+        flex-direction: row !important; /* 強制橫向 */
+        align-items: center !important; /* 垂直置中 */
+        justify-content: flex-start !important; /* 靠左對齊 */
+        
+        padding: 12px 5px !important; /* 上下留出好點擊的空間 */
+        margin-bottom: 5px !important;
+        width: 100% !important; /* 每個景點佔滿一整行 */
+        
+        border-bottom: 1px solid #eee; /* 可選：加一條淡淡的分隔線更像 App */
+        cursor: pointer;
     }
 
-    /* 5. 景點名稱：緊跟在選取框旁邊，徹底取消那 120px 的右邊距 */
-    .item h3 {
-        padding-right: 0 !important; /* 這是解決文字變窄的關鍵 */
-        margin: 0 !important;
-        flex: 1 !important; /* 讓文字佔滿剩餘空間 */
+    /* 3. 讓選取框跟文字之間有一點距離，且文字不要換行 */
+    .map-item-label input[type="checkbox"] {
+        margin-right: 12px !important; /* 勾選框右邊空一點 */
+        transform: scale(1.2); /* 讓勾選框在手機上大一點好點 */
+    }
+
+    .map-item-label span {
         font-size: 1rem !important;
-        line-height: 1.4 !important;
-        white-space: normal !important;
-        text-align: left !important;
-    }
-
-    /* 6. 價格與按鈕：自動靠到最右邊，不擋字 */
-    .action {
-        position: static !important; /* 解除絕對定位，避免重疊 */
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        margin-left: auto !important; /* 把整塊推到最右邊 */
-        gap: 8px !important;
-        width: auto !important;
-    }
-
-    /* 7. 按鈕微調：加大點擊感，縮小體積 */
-    .btn-qty {
-        width: 32px !important;
-        height: 32px !important;
-        font-size: 16px !important;
-    }
-
-    .price {
-        font-size: 0.9rem !important;
-        white-space: nowrap !important;
+        white-space: nowrap !important; /* 防止文字太長被擠到下一行 */
+        overflow: hidden;
+        text-overflow: ellipsis; /* 文字超長顯示... */
     }
 }
 </style>
