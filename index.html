@@ -581,15 +581,15 @@ function calc(){
 const submitBtn = document.getElementById('submitBtn');
 const btnText = document.getElementById('btnText');
 
-// 頁面載入安全倒數 (5秒)
-let initSec = 5;
+// 頁面載入安全倒數 (10秒)
+let initSec = 10;
 const initTimer = setInterval(() => {
     initSec--;
     if(initSec <= 0) {
         clearInterval(initTimer);
         unlockBtn();
     } else {
-        btnText.textContent = currLang === 'zh' ? `請稍候 (${initSec}s)` : `Wait (${initSec}s)`;
+        btnText.textContent = currLang === 'zh' ? `送出報價單進行正式預約(如無法點擊，請重整頁面) (${initSec}s)` : `Generate & Send(Please refresh if link fails) (${initSec}s)`;
     }
 }, 1000);
 
