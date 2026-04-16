@@ -107,56 +107,68 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 .btn-l-style { background-color: #00c300; font-family: Arial, sans-serif; font-weight: bold; font-size: 28px; }
 .btn-wa-style { background-color: #25d366; }
 .btn-wc-style { background-color: #09b83e; }
-/* 確保這段在 CSS 的最下面，才能覆蓋之前的設定 */
 @media (max-width: 992px) {
-    /* 1. 讓整體骨架不左右亂跑 */
+    /* 1. 強制單欄排列，不准一排兩個 */
     .grid { 
         display: block !important; 
     }
-    .side { 
-        position: static !important; 
-        width: 100% !important; 
-        margin-top: 2rem; 
+    .map-items {
+        grid-template-columns: 1fr !important; /* 強制單欄 */
     }
 
-    /* 2. 解決文字跑到邊邊的問題：強制取消那 120px 的右邊距 */
+    /* 2. 景點項目：橫向一排到底 */
     .item {
         display: flex !important;
-        flex-direction: row !important; /* 確保橫向 */
-        justify-content: space-between !important;
+        flex-direction: row !important; /* 橫向 */
         align-items: center !important;
-        padding: 1rem !important;
+        justify-content: flex-start !important;
+        padding: 12px 10px !important;
+        position: relative !important;
         min-height: auto !important;
+        gap: 10px !important; /* 選取框跟文字的間距 */
     }
 
+    /* 3. 景點文字：緊跟在勾選框旁邊，取消 120px 邊距 */
     .item h3 {
-        padding-right: 10px !important; /* 把原本的 120px 改成 10px */
+        flex: 1 !important; /* 自動撐開空間 */
+        padding-right: 0 !important; /* 徹底刪除原本的 120px */
         margin: 0 !important;
-        flex: 1 !important;
-        max-width: 60% !important; /* 給文字 60% 寬度 */
         font-size: 0.95rem !important;
-        white-space: normal !important;
+        white-space: nowrap !important; /* 防止文字折行，若太長則溢出隱藏或自動縮小 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left !important;
     }
 
-    /* 3. 解決按鈕重疊問題：取消絕對定位 */
+    /* 4. 按鈕與價格：移到最右邊，不擋字 */
     .action {
-        position: static !important; /* 解除 absolute */
-        width: auto !important;
-        flex: 0 0 40% !important; /* 給按鈕區塊 40% 寬度 */
+        position: static !important; /* 解除絕對定位 */
         display: flex !important;
-        justify-content: flex-end !important;
+        flex-direction: row !important;
         align-items: center !important;
+        width: auto !important;
         gap: 5px !important;
+        margin-left: auto !important; /* 將整塊推到最右邊 */
     }
 
-    /* 4. 縮小加減鈕，不然手機塞不下 */
-    .btn-qty {
-        width: 28px !important;
-        height: 28px !important;
+    /* 5. 調整價格與按鈕大小，確保手機塞得下 */
+    .price {
+        font-size: 0.85rem !important;
+        margin-right: 5px !important;
+        white-space: nowrap !important;
     }
-    
-    /* 5. 隱藏一些手機版不需要的裝飾，讓空間變大 */
-    .item::before { display: none !important; }
+
+    .btn-qty {
+        width: 26px !important;
+        height: 26px !important;
+    }
+
+    /* 6. 讓側邊欄（總計）乖乖排在下面 */
+    .side {
+        position: static !important;
+        width: 100% !important;
+        margin-top: 20px !important;
+    }
 }</style>
 </head>
 <body>
