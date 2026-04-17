@@ -453,9 +453,9 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
             </div>
         </div>
         <h3 style="margin-bottom:12px; color:#2c3e50; font-size:1.2rem; font-weight:bold; border-left:4px solid #e67e22; padding-left:10px;" 
-    data-zh="專屬包船跳島 (2歲以下不計人數)" 
-    data-en="Private Boat Island Hopping (Ages 2 & under: Free)">
-    🚢 專屬包船跳島 <span style="font-size:0.9rem; color:#7f8c8d; font-weight:normal;">(2歲(含)以下無需計算人數)</span>
+    data-zh="專屬包船跳島-免費午餐&飯店接送 (2歲以下不計人數)" 
+    data-en="Private Boat Island Hopping-Free Lunch & Hotel Shuttle (Ages 2 & under: Free)">
+    🚢 專屬包船跳島-免費午餐&飯店接送 <span style="font-size:0.9rem; color:#7f8c8d; font-weight:normal;">(2歲(含)以下無需計算人數)</span>
 </h3>
         <div class="item"><div><h3 data-zh="北部飯店接送" data-en="Northern hotel transfer">北部飯店接送</h3></div><div class="action">
             <select class="boat-sel" data-area="北部飯店接送" data-zh-area="北部飯店接送" data-en-area="Northern hotel transfer" data-base="10500000">
@@ -701,17 +701,30 @@ function calc(){
         }
     });
 
-    document.querySelectorAll('.boat-sel').forEach(sel=>{
-        const val = Number(sel.value);
-        if(val > 0){
-            let sub = 0; const base = Number(sel.dataset.base);
-            const opt = sel.options[sel.selectedIndex], realPax = Number(opt.dataset.pax);
-            const area = sel.getAttribute('data-' + currLang + '-area');
-            sub = (realPax >= 13) ? base + (realPax - 12) * 750000 : val; 
-            total += sub; 
-            lines.push(`<div class="row"><div class="row-main"><span>${area}${currLang==='zh'?'包船':' Boat'}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${realPax}位/Pax</span></div></div>`);
-        }
-    });
+    document.querySelectorAll('.boat-sel').forEach(sel => {
+    const val = Number(sel.value); // 選單的基礎價值
+    if (val > 0) {
+        let sub = 0;
+        const base = Number(sel.dataset.base); // 13位以上的基礎價
+        const opt = sel.options[sel.selectedIndex];
+        const realPax = Number(opt.dataset.pax); // 抓取 data-pax 的人數
+        const area = sel.getAttribute('data-' + currLang + '-area');
+
+        // --- 修改後的計算邏輯 ---
+        // 1. 先算出「船的基礎費用」 (處理 13位以上加價)
+        let boatBaseFee = (realPax >= 13) ? base + (realPax - 12) * 750000 : val;
+        
+        // 2. 算出「餐費」 (人數 * 25萬)
+        let mealFee = realPax * 250000;
+
+        // 3. 總合 (隱藏餐費，直接加進小計)
+        sub = boatBaseFee + mealFee;
+        // -----------------------
+
+        total += sub;
+        lines.push(`<div class="row"><div class="row-main"><span>${area}${currLang === 'zh' ? '包船' : ' Boat'}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${realPax}位/Pax</span></div></div>`);
+    }
+});
 
     document.querySelectorAll('.qty-generic').forEach(el=>{
         const qty = Number(el.value || 0);
