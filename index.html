@@ -790,13 +790,13 @@ document.querySelectorAll('.boat-sel').forEach(sel => {
         // --- 報價邏輯 ---
         
         // 1. 計算船費 (Boat Fee)
-        // 12位以下依照選單 value；13位以上則每人加 100萬
+        // 12位以下依照選單 value；13位以上則每人加 85萬
         let boatBaseFee = (realPax >= 13) 
-            ? base + (realPax - 12) * 1000000 
+            ? base + (realPax - 12) * 850000
             : val;
         
         // 2. 計算餐費 (Meal Fee)
-        let mealFee = realPax * 250000;
+        let mealFee = realPax * 150000;
 
         // 3. 總費用 = 船費 + 餐費
         sub = boatBaseFee + mealFee;
