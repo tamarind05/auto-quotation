@@ -264,7 +264,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
     </div>
     <div style="flex:1">
         <div style="font-weight:700;color:var(--muted);font-size:0.8rem;">Tamarind Travel Official</div>
-        <h1 id="main-title" style="margin: 5px 0;">旅行社報價系統(富國島)</h1>
+        <h1 id="main-title" style="margin: 5px 0;">旅行社報價系統</h1>
 
         <div style="display: flex; flex-wrap: wrap; align-items: stretch; background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid var(--line); font-size: 0.85rem; color: var(--muted); margin-top: 15px; overflow: hidden;">
             
@@ -336,7 +336,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
         <div class="item"><div><h3 data-zh="珍珠一日雙園 + Buffet" data-en="2-Park Combo(1 day) + Buffet">珍珠一日雙園 + Buffet</h3></div><div class="action"><div class="price">1,760k / 1,210k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="1日雙園+Buffet" data-en="2-Park+Buffet" data-a="1760000" data-c="1210000" data-s="1380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         <div class="item"><div><h3 data-zh="珍珠兩日雙園 + Buffet" data-en="2-Park Combo(2 days) + Buffet">珍珠兩日雙園 + Buffet</h3></div><div class="action"><div class="price">1,950k / 1,400k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="兩日雙園 + Buffet" data-en="2-Park+Buffet" data-a="1950000" data-c="1400000" data-s="1570000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         <div style="border: 2px solid var(--accent); border-radius: 12px; padding: 10px; margin: 10px 0;">
-            <div class="item" style="border-bottom: 1px dashed var(--line);"><div><h3 data-zh="海星沙灘船票" data-en="Starfish Beach Boat">海星沙灘船票</h3></div><div class="action"><div class="price">200k / 人</div><label class="chk"><input type="checkbox" id="starfishBoat" class="pick-ticket" data-mode="show" data-zh="海星沙灘船票" data-en="Starfish Boat" data-p="200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+            <div class="item" style="border-bottom: 1px dashed var(--line);"><div><h3 data-zh="海星沙灘船票" data-en="Starfish Beach Boat">海星沙灘船票</h3></div><div class="action"><div class="price">300k / 人</div><label class="chk"><input type="checkbox" id="starfishBoat" class="pick-ticket" data-mode="show" data-zh="海星沙灘船票" data-en="Starfish Boat" data-p="300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
             <div class="item" style="border-bottom: none;"><div><h3 data-zh="海星沙灘接送" data-en="Starfish Beach Van">海星沙灘接送</h3></div><div class="action"><div class="price">300k (單次)</div><label class="chk"><input type="checkbox" id="starfishVan" class="pick-car" data-zh="海星沙灘接送" data-en="Starfish Van" data-price="300000" data-fixed="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         </div>
         <div class="item"><div><h3 data-zh="Safari 動物園門票" data-en="Vinpearl Safari Ticket">Safari 動物園門票</h3></div><div class="action"><div class="price">850k / 650k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="動物園門票" data-en="Safari Ticket" data-a="850000" data-c="650000" data-s="650000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
@@ -482,23 +482,75 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
     data-en="Private Boat Island Hopping-Free Lunch & Hotel Shuttle (Children 2 years old and below are excluded from headcount)">
     🚢 專屬包船跳島-免費午餐&飯店接送 <span style="font-size:0.9rem; color:#7f8c8d; font-weight:normal;">(兩歲(含)以下不需計算人數)</span>
 </h3>
-        <div class="item"><div><h3 data-zh="北部飯店接送" data-en="Northern hotel transfer">北部飯店接送</h3></div><div class="action">
-            <select class="boat-sel" data-area="北部飯店接送" data-zh-area="北部飯店接送" data-en-area="Northern hotel transfer" data-base="10500000">
-                <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
-                <option value="4500000" data-pax="3">1-3位</option><option value="5500000" data-pax="5">4-5位</option><option value="6500000" data-pax="7">6-7位</option><option value="7500000" data-pax="9">8-9位</option><option value="8500000" data-pax="11">10-11位</option><option value="10500000" data-pax="12">12位</option><option value="13" data-pax="13">13位</option><option value="14" data-pax="14">14位</option><option value="15" data-pax="15">15位</option><option value="16" data-pax="16">16位</option><option value="17" data-pax="17">17位</option><option value="18" data-pax="18">18位</option><option value="19" data-pax="19">19位</option><option value="20" data-pax="20">20位</option>
-            </select>
-        </div></div>
-        <div class="item"><div><h3 data-zh="中部飯店接送" data-en="Central hotel transfer">中部飯店接送</h3></div><div class="action">
-            <select class="boat-sel" data-area="中部飯店接送" data-zh-area="中部飯店接送" data-en-area="Central hotel transfer" data-base="10000000">
-                <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
-                <option value="4000000" data-pax="3">1-3位</option><option value="5000000" data-pax="5">4-5位</option><option value="6000000" data-pax="7">6-7位</option><option value="7000000" data-pax="9">8-9位</option><option value="8000000" data-pax="11">10-11位</option><option value="10000000" data-pax="12">12位</option><option value="13" data-pax="13">13位</option><option value="14" data-pax="14">14位</option><option value="15" data-pax="15">15位</option><option value="16" data-pax="16">16位</option><option value="17" data-pax="17">17位</option><option value="18" data-pax="18">18位</option><option value="19" data-pax="19">19位</option><option value="20" data-pax="20">20位</option>
-            </select>
-        </div></div>
-        <div class="item"><div><h3 data-zh="南部飯店接送" data-en="Southern hotel transfer">南部飯店接送</h3></div><div class="action">
-            <select class="boat-sel" data-area="南部飯店接送" data-zh-area="南部飯店接送" data-en-area="Southern hotel transfer" data-base="9500000">
-                <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
-                <option value="3500000" data-pax="3">1-3位</option><option value="4500000" data-pax="5">4-5位</option><option value="5500000" data-pax="7">6-7位</option><option value="6500000" data-pax="9">8-9位</option><option value="7500000" data-pax="11">10-11位</option><option value="9500000" data-pax="12">12位</option><option value="13" data-pax="13">13位</option><option value="14" data-pax="14">14位</option><option value="15" data-pax="15">15位</option><option value="16" data-pax="16">16位</option><option value="17" data-pax="17">17位</option><option value="18" data-pax="18">18位</option><option value="19" data-pax="19">19位</option><option value="20" data-pax="20">20位</option>
-            </select>
+    <!-- 北部飯店接送 (起點 650萬) -->
+<div class="item">
+    <div><h3 data-zh="北部飯店接送" data-en="Northern hotel transfer">北部飯店接送</h3></div>
+    <div class="action">
+        <select class="boat-sel" data-area="北部飯店接送" data-zh-area="北部飯店接送" data-en-area="Northern hotel transfer" data-base="11500000">
+            <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
+            <option value="6500000" data-pax="3">1-3位</option>
+            <option value="7500000" data-pax="5">4-5位</option>
+            <option value="8500000" data-pax="7">6-7位</option>
+            <option value="9500000" data-pax="9">8-9位</option>
+            <option value="10500000" data-pax="11">10-11位</option>
+            <option value="11500000" data-pax="12">12位</option>
+            <option value="13" data-pax="13">13位</option>
+            <option value="14" data-pax="14">14位</option>
+            <option value="15" data-pax="15">15位</option>
+            <option value="16" data-pax="16">16位</option>
+            <option value="17" data-pax="17">17位</option>
+            <option value="18" data-pax="18">18位</option>
+            <option value="19" data-pax="19">19位</option>
+            <option value="20" data-pax="20">20位</option>
+        </select>
+    </div>
+</div>
+
+<!-- 中部飯店接送 (起點 600萬) -->
+<div class="item">
+    <div><h3 data-zh="中部飯店接送" data-en="Central hotel transfer">中部飯店接送</h3></div>
+    <div class="action">
+        <select class="boat-sel" data-area="中部飯店接送" data-zh-area="中部飯店接送" data-en-area="Central hotel transfer" data-base="11000000">
+            <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
+            <option value="6000000" data-pax="3">1-3位</option>
+            <option value="7000000" data-pax="5">4-5位</option>
+            <option value="8000000" data-pax="7">6-7位</option>
+            <option value="9000000" data-pax="9">8-9位</option>
+            <option value="10000000" data-pax="11">10-11位</option>
+            <option value="11000000" data-pax="12">12位</option>
+            <option value="13" data-pax="13">13位</option>
+            <option value="14" data-pax="14">14位</option>
+            <option value="15" data-pax="15">15位</option>
+            <option value="16" data-pax="16">16位</option>
+            <option value="17" data-pax="17">17位</option>
+            <option value="18" data-pax="18">18位</option>
+            <option value="19" data-pax="19">19位</option>
+            <option value="20" data-pax="20">20位</option>
+        </select>
+    </div>
+</div>
+
+<!-- 南部飯店接送 (起點 550萬) -->
+<div class="item">
+    <div><h3 data-zh="南部飯店接送" data-en="Southern hotel transfer">南部飯店接送</h3></div>
+    <div class="action">
+        <select class="boat-sel" data-area="南部飯店接送" data-zh-area="南部飯店接送" data-en-area="Southern hotel transfer" data-base="10500000">
+            <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
+            <option value="5500000" data-pax="3">1-3位</option>
+            <option value="6500000" data-pax="5">4-5位</option>
+            <option value="7500000" data-pax="7">6-7位</option>
+            <option value="8500000" data-pax="9">8-9位</option>
+            <option value="9500000" data-pax="11">10-11位</option>
+            <option value="10500000" data-pax="12">12位</option>
+            <option value="13" data-pax="13">13位</option>
+            <option value="14" data-pax="14">14位</option>
+            <option value="15" data-pax="15">15位</option>
+            <option value="16" data-pax="16">16位</option>
+            <option value="17" data-pax="17">17位</option>
+            <option value="18" data-pax="18">18位</option>
+            <option value="19" data-pax="19">19位</option>
+            <option value="20" data-pax="20">20位</option>
+        </select>
         </div></div>
       </div>
 
@@ -726,31 +778,45 @@ function calc(){
         }
     });
 
-    document.querySelectorAll('.boat-sel').forEach(sel => {
-    const val = Number(sel.value); // 選單的基礎價值
+document.querySelectorAll('.boat-sel').forEach(sel => {
+    const val = Number(sel.value);
     if (val > 0) {
         let sub = 0;
-        const base = Number(sel.dataset.base); // 13位以上的基礎價
         const opt = sel.options[sel.selectedIndex];
-        const realPax = Number(opt.dataset.pax); // 抓取 data-pax 的人數
+        const realPax = Number(opt.dataset.pax); // 實際人數
+        const base = Number(sel.dataset.base);   // 該區域 12 位的基礎船費
         const area = sel.getAttribute('data-' + currLang + '-area');
 
-        // --- 修改後的計算邏輯 ---
-        // 1. 先算出「船的基礎費用」 (處理 13位以上加價)
-        let boatBaseFee = (realPax >= 13) ? base + (realPax - 12) * 750000 : val;
+        // --- 報價邏輯 ---
         
-        // 2. 算出「餐費」 (人數 * 25萬)
+        // 1. 計算船費 (Boat Fee)
+        // 12位以下依照選單 value；13位以上則每人加 100萬
+        let boatBaseFee = (realPax >= 13) 
+            ? base + (realPax - 12) * 1000000 
+            : val;
+        
+        // 2. 計算餐費 (Meal Fee)
         let mealFee = realPax * 250000;
 
-        // 3. 總合 (隱藏餐費，直接加進小計)
+        // 3. 總費用 = 船費 + 餐費
         sub = boatBaseFee + mealFee;
-        // -----------------------
 
         total += sub;
-        lines.push(`<div class="row"><div class="row-main"><span>${area}${currLang === 'zh' ? '包船' : ' Boat'}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${realPax}位/Pax</span></div></div>`);
+        
+        // 渲染至結果清單
+        lines.push(`
+            <div class="row">
+                <div class="row-main">
+                    <span>${area}${currLang === 'zh' ? '包船' : ' Boat'}</span>
+                    <strong>VND ${sub.toLocaleString()}</strong>
+                </div>
+                <div class="row-detail">
+                    <span>${realPax} 位/Pax</span>
+                </div>
+            </div>
+        `);
     }
 });
-
     document.querySelectorAll('.qty-generic').forEach(el=>{
         const qty = Number(el.value || 0);
         if(qty > 0){
