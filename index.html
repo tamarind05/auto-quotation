@@ -246,6 +246,109 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
         order: 1 !important;         /* 強制排在第一順位（上方） */
     }
 }
+
+/* ===== 景點門票彈窗 ===== */
+#ticket-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 30000;
+    backdrop-filter: blur(4px);
+    animation: fadeInOverlay 0.2s ease;
+}
+@keyframes fadeInOverlay { from{opacity:0} to{opacity:1} }
+
+#ticket-modal {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--card);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    z-index: 30001;
+    width: 92%;
+    max-width: 480px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: slideUpModal 0.25s ease;
+}
+@keyframes slideUpModal {
+    from { opacity:0; transform: translate(-50%, -45%); }
+    to   { opacity:1; transform: translate(-50%, -50%); }
+}
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0;
+    background: var(--card);
+    border-radius: 20px 20px 0 0;
+    z-index: 1;
+}
+.modal-header h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem;
+    color: var(--primary);
+    display: flex; align-items: center; gap: 8px;
+}
+.modal-close {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: none; background: #f0ebe4;
+    cursor: pointer; font-size: 1.1rem;
+    display: grid; place-items: center; color: var(--muted);
+    transition: background 0.2s;
+}
+.modal-close:hover { background: #e0d8ce; }
+.modal-body { padding: 14px 20px 20px; }
+.modal-no-ticket {
+    text-align: center; padding: 30px 20px;
+    color: var(--muted); font-size: 0.9rem;
+}
+.modal-no-ticket .icon { font-size: 2rem; margin-bottom: 8px; }
+.modal-ticket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee5d9;
+    gap: 10px;
+}
+.modal-ticket-item:last-child { border-bottom: none; }
+.modal-ticket-item .t-name { font-size: 0.9rem; font-weight: 600; flex: 1; }
+.modal-ticket-item .t-price { font-size: 0.85rem; color: var(--muted); font-weight: 700; text-align: right; white-space: nowrap; }
+.modal-ticket-item .t-add {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 0.85rem; color: var(--muted); cursor: pointer;
+    padding: 5px 10px; border-radius: 20px;
+    border: 1px solid var(--line); background: #fff;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+.modal-ticket-item .t-add:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.modal-ticket-item .t-add input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+.map-item-label.has-ticket {
+    cursor: pointer;
+    position: relative;
+}
+.map-item-label.has-ticket .ticket-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 1px 7px;
+    margin-left: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.map-item-label.has-ticket span { color: var(--primary); }
 </style>
 </head>
 <body>
@@ -315,43 +418,12 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
       </div>
 
       <div class="content active" id="spot">
-        <h2 class="section-title" data-zh="熱門景點門票 (分級計價)" data-en="Popular Tickets (Tiered)">熱門景點門票 (分級計價)</h2>
-        <div class="item"><div><h3 data-zh="套票：越南精粹秀 ＋ 泰迪熊" data-en="Combo: Quintessence + Teddy Bear">套票：越南精粹秀 ＋ 泰迪熊</h3></div><div class="action"><div class="price">450k / 340k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="精粹秀+泰迪熊" data-en="Quintessence+Teddy" data-a="450000" data-c="340000" data-s="340000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 泰迪熊" data-en="Combo: Gondola + Teddy Bear">套票：貢多拉船 ＋ 泰迪熊</h3></div><div class="action"><div class="price">300k / 225k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="貢多拉+泰迪熊" data-en="Gondola+Teddy" data-a="300000" data-c="225000" data-s="225000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 越南精粹秀" data-en="Combo: Gondola + Quintessence">套票：貢多拉船 ＋ 越南精粹秀</h3></div><div class="action"><div class="price">400k / 300k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="貢多拉+精粹秀" data-en="Gondola+Quint" data-a="400000" data-c="300000" data-s="300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="全包套票：貢多拉＋泰迪熊＋精粹秀" data-en="All-in Combo: Gondola+Teddy+Quint">全包套票：貢多拉＋泰迪熊＋精粹秀</h3></div><div class="action"><div class="price">500k / 380k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="三合一全包套票" data-en="All-in Combo" data-a="500000" data-c="380000" data-s="380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="晚餐 ＋ 海之交響曲表演" data-en="Dinner + Sea Symphony Show">晚餐 ＋ 海之交響曲表演</h3></div><div class="action"><div class="price">1,000k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="晚餐+交響曲秀" data-en="Dinner+Symphony" data-p="1000000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="點心 ＋ 海之交響曲 (沙灘)" data-en="Snack + Sea Symphony (Beach)">點心 ＋ 海之交響曲 (沙灘)</h3></div><div class="action"><div class="price">700k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="點心+交響曲(沙灘)" data-en="Snack+Symphony" data-p="700000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="雙秀組合 (海之吻 ＋ 交響曲)" data-en="Double Show (Kiss + Symphony)">雙秀組合 (海之吻 ＋ 交響曲)</h3></div><div class="action"><div class="price">1,200k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="海之吻+交響曲雙秀" data-en="Double Show" data-p="1200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
-        <div class="item"><div><h3 data-zh="日落小鎮纜車來回" data-en="Cable Car Round Trip">日落小鎮纜車來回</h3></div><div class="action"><div class="price">850k / 700k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="纜車來回" data-en="Cable Car" data-a="850000" data-c="700000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="纜車來回 + Buffet" data-en="Cable Car + Buffet">纜車來回 + Buffet</h3></div><div class="action"><div class="price">1,150k / 900k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="纜車+Buffet" data-en="Cable+Buffet" data-a="1150000" data-c="900000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="海之吻秀 (Kiss of the Sea)" data-en="Kiss of the Sea Show">海之吻秀 (Kiss of the Sea)</h3></div><div class="action"><div class="price">750k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="海之吻秀" data-en="Kiss of Sea" data-p="750000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="海之交響樂秀 (Symphony)" data-en="Sea Symphony Show">海之交響樂秀 (Symphony)</h3></div><div class="action"><div class="price">660k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="交響樂秀" data-en="Symphony Show" data-p="660000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
-        <div class="item"><div><h3 data-zh="珍珠樂園門票" data-en="VinWonders">珍珠樂園門票 </h3></div><div class="action"><div class="price">950k / 710k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠樂園" data-en="VinWonders" data-a="950000" data-c="710000" data-s="710000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)">珍珠一日雙園</h3></div><div class="action"><div class="price">1,500k / 1,110k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)" data-a="1500000" data-c="1110000" data-s="1100000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)">珍珠兩日雙園</h3></div><div class="action"><div class="price">1,700k / 1,300k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)" data-a="1700000" data-c="1300000" data-s="1300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠樂園門票 + Buffet" data-en="VinWonders + Buffet">珍珠樂園門票 + Buffet</h3></div><div class="action"><div class="price">1,240k / 840k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠樂園+Buffet" data-en="VinWonders+Buffet" data-a="1240000" data-c="840000" data-s="1010000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠一日雙園 + Buffet" data-en="2-Park Combo(1 day) + Buffet">珍珠一日雙園 + Buffet</h3></div><div class="action"><div class="price">1,760k / 1,210k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="1日雙園+Buffet" data-en="2-Park+Buffet" data-a="1760000" data-c="1210000" data-s="1380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠兩日雙園 + Buffet" data-en="2-Park Combo(2 days) + Buffet">珍珠兩日雙園 + Buffet</h3></div><div class="action"><div class="price">1,950k / 1,400k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="兩日雙園 + Buffet" data-en="2-Park+Buffet" data-a="1950000" data-c="1400000" data-s="1570000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div style="border: 2px solid var(--accent); border-radius: 12px; padding: 10px; margin: 10px 0;">
-            <div class="item" style="border-bottom: 1px dashed var(--line);"><div><h3 data-zh="海星沙灘船票" data-en="Starfish Beach Boat">海星沙灘船票</h3></div><div class="action"><div class="price">200k / 人</div><label class="chk"><input type="checkbox" id="starfishBoat" class="pick-ticket" data-mode="show" data-zh="海星沙灘船票" data-en="Starfish Boat" data-p="200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-            <div class="item" style="border-bottom: none;"><div><h3 data-zh="海星沙灘接送" data-en="Starfish Beach Van">海星沙灘接送</h3></div><div class="action"><div class="price">300k (單次)</div><label class="chk"><input type="checkbox" id="starfishVan" class="pick-car" data-zh="海星沙灘接送" data-en="Starfish Van" data-price="300000" data-fixed="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        </div>
-        <div class="item"><div><h3 data-zh="Safari 動物園門票" data-en="Vinpearl Safari Ticket">Safari 動物園門票</h3></div><div class="action"><div class="price">850k / 650k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="動物園門票" data-en="Safari Ticket" data-a="850000" data-c="650000" data-s="650000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="泰迪熊博物館" data-en="Teddy Bear Museum">泰迪熊博物館</h3></div><div class="action"><div class="price">200k / 150k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="泰迪熊" data-en="Teddy Museum" data-a="200000" data-c="150000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="威尼斯貢多拉船" data-en="Venice Gondola">威尼斯貢多拉船</h3></div><div class="action"><div class="price">200k / 150k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="貢多拉" data-en="Gondola" data-a="200000" data-c="150000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="碗公(竹簍)船" data-en="Basket Boat">碗公(竹簍)船</h3></div><div class="action"><div class="price">200k </div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="碗公(竹簍)船" data-en="Basket Boat" data-a="200000" data-c="200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="越南精粹秀" data-en="Quintessence of Vietnam">越南精粹秀</h3></div><div class="action"><div class="price">300k / 230k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="越南精粹秀" data-en="Quint Show" data-a="300000" data-c="230000" data-s="230000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-
-        <div class="map-section">
+          <div class="map-section">
             <div class="map-title">🗺️ <span data-zh="富國島旅遊簡易分區地圖" data-en="Phu Quoc Map (Simplified)">富國島旅遊簡易分區地圖</span></div>
             <div class="map-group">
                 <span class="map-group-label">📍 <span data-zh="北部（自然 × 主題樂園）" data-en="North (Nature & Theme Parks)">北部（自然 × 主題樂園）</span></span>
                 <div class="map-items">
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 海星沙灘" data-en=" Starfish Beach"><span data-zh=" 海星沙灘" data-en=" Starfish Beach"> 海星沙灘</span></label>
-                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="牛奶沙灘" data-en="Milk Beach"><span data-zh="牛奶沙灘" data-en="Milk Beach">牛奶沙灘</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 珍珠樂園" data-en=" VinWonders"><span data-zh=" 珍珠樂園" data-en=" VinWonders"> 珍珠樂園</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 半野生動物園" data-en=" Safari"><span data-zh="半野生動物園" data-en=" Safari"> 半野生動物園</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 大世界" data-en=" Grand World"><span data-zh=" 大世界" data-en=" Grand World"> 大世界</span></label>
@@ -382,6 +454,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
                 <span class="map-group-label">📍 <span data-zh="南部（海景 × 行程）" data-en="South (Sea & Tours)">南部（海景 × 行程）</span></span>
                 <div class="map-items">
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 跨海纜車" data-en=" Cable Car"><span data-zh=" 跨海纜車" data-en=" Cable Car"> 跨海纜車</span></label>
+                    <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="牛奶沙灘" data-en="Milk Beach"><span data-zh="牛奶沙灘" data-en="Milk Beach">牛奶沙灘</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="日落小鎮+親吻橋" data-en="Sunset Town & Bridge"><span data-zh="日落小鎮+親吻橋" data-en="Sunset Town & Bridge">日落小鎮+親吻橋</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh="老監獄" data-en="Old Prison"><span data-zh="老監獄" data-en="Old Prison">老監獄</span></label>
                     <label class="map-item-label"><input type="checkbox" class="pick-map" data-zh=" 護國寺" data-en="Pagoda"><span data-zh=" 護國寺" data-en="Pagoda"> 護國寺</span></label>
@@ -391,6 +464,37 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
                 </div>
             </div>
         </div>
+
+      <h2 class="section-title" data-zh="熱門景點門票 (分級計價)" data-en="Popular Tickets (Tiered)">熱門景點門票 (分級計價)</h2>
+        <div class="item"><div><h3 data-zh="套票：越南精粹秀 ＋ 泰迪熊" data-en="Combo: Quintessence + Teddy Bear">套票：越南精粹秀 ＋ 泰迪熊</h3></div><div class="action"><div class="price">450k / 340k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="精粹秀+泰迪熊" data-en="Quintessence+Teddy" data-a="450000" data-c="340000" data-s="340000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 泰迪熊" data-en="Combo: Gondola + Teddy Bear">套票：貢多拉船 ＋ 泰迪熊</h3></div><div class="action"><div class="price">300k / 225k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="貢多拉+泰迪熊" data-en="Gondola+Teddy" data-a="300000" data-c="225000" data-s="225000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 越南精粹秀" data-en="Combo: Gondola + Quintessence">套票：貢多拉船 ＋ 越南精粹秀</h3></div><div class="action"><div class="price">400k / 300k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="貢多拉+精粹秀" data-en="Gondola+Quint" data-a="400000" data-c="300000" data-s="300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="全包套票：貢多拉＋泰迪熊＋精粹秀" data-en="All-in Combo: Gondola+Teddy+Quint">全包套票：貢多拉＋泰迪熊＋精粹秀</h3></div><div class="action"><div class="price">500k / 380k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="三合一全包套票" data-en="All-in Combo" data-a="500000" data-c="380000" data-s="380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
+        <div class="item"><div><h3 data-zh="日落小鎮纜車來回" data-en="Cable Car Round Trip">日落小鎮纜車來回</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送親吻橋門票" data-en="🎁 Free Kiss Bridge Ticket">🎁 贈送親吻橋門票</small></div><div class="action"><div class="price">850k / 700k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="纜車來回" data-en="Cable Car" data-a="850000" data-c="700000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="纜車來回 + Buffet" data-en="Cable Car + Buffet">纜車來回 + Buffet</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送親吻橋門票" data-en="🎁 Free Kiss Bridge Ticket">🎁 贈送親吻橋門票</small></div><div class="action"><div class="price">1,150k / 900k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="纜車+Buffet" data-en="Cable+Buffet" data-a="1150000" data-c="900000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="晚餐 ＋ 海之交響曲表演" data-en="Dinner + Sea Symphony Show">晚餐 ＋ 海之交響曲表演</h3></div><div class="action"><div class="price">1,000k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="晚餐+交響曲秀" data-en="Dinner+Symphony" data-p="1000000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="點心 ＋ 海之交響曲 (沙灘)" data-en="Snack + Sea Symphony (Beach)">點心 ＋ 海之交響曲 (沙灘)</h3></div><div class="action"><div class="price">700k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="點心+交響曲(沙灘)" data-en="Snack+Symphony" data-p="700000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="雙秀組合 (海之吻 ＋ 交響曲)" data-en="Double Show (Kiss + Symphony)">雙秀組合 (海之吻 ＋ 交響曲)</h3></div><div class="action"><div class="price">1,200k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="海之吻+交響曲雙秀" data-en="Double Show" data-p="1200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="海之吻秀 (Kiss of the Sea)" data-en="Kiss of the Sea Show">海之吻秀 (Kiss of the Sea)</h3></div><div class="action"><div class="price">750k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="海之吻秀" data-en="Kiss of Sea" data-p="750000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="海之交響樂秀 (Symphony)" data-en="Sea Symphony Show">海之交響樂秀 (Symphony)</h3></div><div class="action"><div class="price">660k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="交響樂秀" data-en="Symphony Show" data-p="660000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
+        <div class="item"><div><h3 data-zh="珍珠樂園門票" data-en="VinWonders">珍珠樂園門票 </h3></div><div class="action"><div class="price">950k / 710k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠樂園" data-en="VinWonders" data-a="950000" data-c="710000" data-s="710000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)">珍珠一日雙園</h3></div><div class="action"><div class="price">1,500k / 1,110k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)" data-a="1500000" data-c="1110000" data-s="1100000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)">珍珠兩日雙園</h3></div><div class="action"><div class="price">1,700k / 1,300k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)" data-a="1700000" data-c="1300000" data-s="1300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠樂園門票 + Buffet" data-en="VinWonders + Buffet">珍珠樂園門票 + Buffet</h3></div><div class="action"><div class="price">1,240k / 840k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠樂園+Buffet" data-en="VinWonders+Buffet" data-a="1240000" data-c="840000" data-s="1010000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠一日雙園 + Buffet" data-en="2-Park Combo(1 day) + Buffet">珍珠一日雙園 + Buffet</h3></div><div class="action"><div class="price">1,760k / 1,210k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="1日雙園+Buffet" data-en="2-Park+Buffet" data-a="1760000" data-c="1210000" data-s="1380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠兩日雙園 + Buffet" data-en="2-Park Combo(2 days) + Buffet">珍珠兩日雙園 + Buffet</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送泰迪熊博物館票" data-en="🎁 Free Teddy Bear Museum">🎁 贈送泰迪熊博物館票</small></div><div class="action"><div class="price">1,950k / 1,400k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="兩日雙園 + Buffet" data-en="2-Park+Buffet" data-a="1950000" data-c="1400000" data-s="1570000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div style="border: 2px solid var(--accent); border-radius: 12px; padding: 10px; margin: 10px 0;">
+            <div class="item" style="border-bottom: 1px dashed var(--line);"><div><h3 data-zh="海星沙灘船票" data-en="Starfish Beach Boat">海星沙灘船票</h3></div><div class="action"><div class="price">300k / 人</div><label class="chk"><input type="checkbox" id="starfishBoat" class="pick-ticket" data-mode="show" data-zh="海星沙灘船票" data-en="Starfish Boat" data-p="300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+            <div class="item" style="border-bottom: none;"><div><h3 data-zh="海星沙灘接送" data-en="Starfish Beach Van">海星沙灘接送</h3></div><div class="action"><div class="price">300k (單次)</div><label class="chk"><input type="checkbox" id="starfishVan" class="pick-car" data-zh="海星沙灘接送" data-en="Starfish Van" data-price="300000" data-fixed="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        </div>
+        <div class="item"><div><h3 data-zh="Safari 動物園門票" data-en="Vinpearl Safari Ticket">Safari 動物園門票</h3></div><div class="action"><div class="price">850k / 650k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="動物園門票" data-en="Safari Ticket" data-a="850000" data-c="650000" data-s="650000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="泰迪熊博物館" data-en="Teddy Bear Museum">泰迪熊博物館</h3></div><div class="action"><div class="price">200k / 150k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="泰迪熊" data-en="Teddy Museum" data-a="200000" data-c="150000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="威尼斯貢多拉船" data-en="Venice Gondola">威尼斯貢多拉船</h3></div><div class="action"><div class="price">200k / 150k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="貢多拉" data-en="Gondola" data-a="200000" data-c="150000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="碗公(竹簍)船" data-en="Basket Boat">碗公(竹簍)船</h3></div><div class="action"><div class="price">200k </div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="碗公(竹簍)船" data-en="Basket Boat" data-a="200000" data-c="200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="越南精粹秀" data-en="Quintessence of Vietnam">越南精粹秀</h3></div><div class="action"><div class="price">300k / 230k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="越南精粹秀" data-en="Quint Show" data-a="300000" data-c="230000" data-s="230000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+
       </div>
 
       <div class="content" id="car">
@@ -659,6 +763,10 @@ function switchLang(lang) {
     document.querySelectorAll('select option[data-zh]').forEach(opt => {
         opt.textContent = opt.getAttribute('data-' + lang);
     });
+    // 更新門票徽章文字
+    document.querySelectorAll('.ticket-badge').forEach(b => {
+        b.textContent = lang === 'en' ? '🎫 Ticket' : '🎫 門票';
+    });
     calc();
 }
 
@@ -790,7 +898,7 @@ document.querySelectorAll('.boat-sel').forEach(sel => {
         // --- 報價邏輯 ---
         
         // 1. 計算船費 (Boat Fee)
-        // 12位以下依照選單 value；13位以上則每人加 85萬
+        // 12位以下依照選單 value；13位以上則每人加 75萬
         let boatBaseFee = (realPax >= 13) 
             ? base + (realPax - 12) * 850000
             : val;
@@ -948,6 +1056,202 @@ fetch(gasUrl, {
 document.querySelectorAll('input, select, textarea').forEach(el=>el.addEventListener('input',calc));
 calc();
 </script>
+<!-- ===== 景點門票彈窗 ===== -->
+<div id="ticket-modal-overlay" onclick="closeTicketModal()"></div>
+<div id="ticket-modal">
+    <div class="modal-header">
+        <h3 id="modal-spot-name">🎫 景點門票</h3>
+        <button class="modal-close" onclick="closeTicketModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-ticket-list"></div>
+</div>
+
+<script>
+// ===== 景點 → 門票 對應資料表 =====
+const SPOT_TICKETS = {
+    // 北部
+    '珍珠樂園': {
+        icon: '🎡',
+        tickets: ['珍珠樂園門票','珍珠一日雙園','珍珠兩日雙園','珍珠樂園門票 + Buffet','珍珠一日雙園 + Buffet','珍珠兩日雙園 + Buffet']
+    },
+    'VinWonders': {
+        icon: '🎡',
+        tickets: ['珍珠樂園門票','珍珠一日雙園','珍珠兩日雙園','珍珠樂園門票 + Buffet','珍珠一日雙園 + Buffet','珍珠兩日雙園 + Buffet']
+    },
+    '半野生動物園': {
+        icon: '🦁',
+        tickets: ['Safari 動物園門票']
+    },
+    'Safari': {
+        icon: '🦁',
+        tickets: ['Safari 動物園門票']
+    },
+    '大世界': {
+        icon: '🏛️',
+        tickets: ['威尼斯貢多拉船','泰迪熊博物館','套票：貢多拉船 ＋ 泰迪熊','套票：越南精粹秀 ＋ 泰迪熊','套票：貢多拉船 ＋ 越南精粹秀','全包套票：貢多拉＋泰迪熊＋精粹秀','越南精粹秀']
+    },
+    'Grand World': {
+        icon: '🏛️',
+        tickets: ['威尼斯貢多拉船','泰迪熊博物館','套票：貢多拉船 ＋ 泰迪熊','套票：越南精粹秀 ＋ 泰迪熊','套票：貢多拉船 ＋ 越南精粹秀','全包套票：貢多拉＋泰迪熊＋精粹秀','越南精粹秀']
+    },
+    '碗公船(竹簍船)': {
+        icon: '🚤',
+        tickets: ['碗公(竹簍)船']
+    },
+    'Basket Boat': {
+        icon: '🚤',
+        tickets: ['碗公(竹簍)船']
+    },
+    '海星沙灘': {
+        icon: '⭐',
+        tickets: ['海星沙灘船票','海星沙灘接送']
+    },
+    'Starfish Beach': {
+        icon: '⭐',
+        tickets: ['海星沙灘船票','海星沙灘接送']
+    },
+    // 南部
+    '跨海纜車': {
+        icon: '🚡',
+        tickets: ['日落小鎮纜車來回','纜車來回 + Buffet']
+    },
+    'Cable Car': {
+        icon: '🚡',
+        tickets: ['日落小鎮纜車來回','纜車來回 + Buffet']
+    },
+    '日落小鎮+親吻橋': {
+        icon: '🌅',
+        tickets: ['日落小鎮纜車來回','纜車來回 + Buffet','晚餐 ＋ 海之交響曲表演','點心 ＋ 海之交響曲 (沙灘)','雙秀組合 (海之吻 ＋ 交響曲)','海之吻秀 (Kiss of the Sea)','海之交響樂秀 (Symphony)']
+    },
+    'Sunset Town & Bridge': {
+        icon: '🌅',
+        tickets: ['日落小鎮纜車來回','纜車來回 + Buffet','晚餐 ＋ 海之交響曲表演','點心 ＋ 海之交響曲 (沙灘)','雙秀組合 (海之吻 ＋ 交響曲)','海之吻秀 (Kiss of the Sea)','海之交響樂秀 (Symphony)']
+    },
+};
+
+// 找出每個 .item 對應的門票 checkbox 元素（用 data-zh / data-en 做 key）
+function buildTicketMap() {
+    const map = {};
+    document.querySelectorAll('.pick-ticket').forEach(cb => {
+        const zh = cb.getAttribute('data-zh') || '';
+        const en = cb.getAttribute('data-en') || '';
+        // 取得最近的 .item > div > h3 的文字
+        const h3 = cb.closest('.item')?.querySelector('h3');
+        const label = h3 ? (h3.getAttribute('data-zh') || h3.textContent.trim()) : zh;
+        map[label] = cb;
+        // 也用 starfish 特殊 id
+        if(cb.id) map[cb.id] = cb;
+    });
+    // 也加入 starfishVan (pick-car)
+    const sv = document.getElementById('starfishVan');
+    if(sv) map['海星沙灘接送'] = sv;
+    return map;
+}
+
+function getTicketCheckbox(ticketName, ticketMap) {
+    // 直接匹配
+    if(ticketMap[ticketName]) return ticketMap[ticketName];
+    // 部分匹配
+    for(const key of Object.keys(ticketMap)) {
+        if(key.includes(ticketName) || ticketName.includes(key)) return ticketMap[key];
+    }
+    return null;
+}
+
+function openTicketModal(spotName, icon) {
+    const overlay = document.getElementById('ticket-modal-overlay');
+    const modal = document.getElementById('ticket-modal');
+    const nameEl = document.getElementById('modal-spot-name');
+    const listEl = document.getElementById('modal-ticket-list');
+
+    const lang = window.currLang || 'zh';
+    nameEl.textContent = (icon || '🎫') + ' ' + spotName;
+
+    // 找出對應票種
+    const spotData = SPOT_TICKETS[spotName.trim()];
+    const ticketMap = buildTicketMap();
+
+    if (!spotData || !spotData.tickets || spotData.tickets.length === 0) {
+        listEl.innerHTML = `<div class="modal-no-ticket"><div class="icon">🆓</div><p>${lang === 'zh' ? '此景點無需門票，自由入場！' : 'No ticket required for this spot!'}</p></div>`;
+    } else {
+        let html = '';
+        spotData.tickets.forEach(tName => {
+            const cb = getTicketCheckbox(tName, ticketMap);
+            if(!cb) return;
+            const item = cb.closest('.item');
+            const h3 = item?.querySelector('h3');
+            const priceEl = item?.querySelector('.price');
+            const displayName = h3 ? (lang === 'zh' ? (h3.getAttribute('data-zh') || h3.textContent.trim()) : (h3.getAttribute('data-en') || h3.textContent.trim())) : tName;
+            const price = priceEl ? priceEl.textContent.trim() : '';
+            const checked = cb.checked ? 'checked' : '';
+            const cbId = cb.id || ('modal-cb-' + Math.random().toString(36).substr(2,6));
+            if(!cb.id) cb.id = cbId;
+            html += `
+            <div class="modal-ticket-item">
+                <div class="t-name">${displayName}</div>
+                <div class="t-price">${price}</div>
+                <label class="t-add">
+                    <input type="checkbox" ${checked} onchange="syncTicketCheckbox('${cbId}', this)" >
+                    <span>${lang === 'zh' ? '加入' : 'Add'}</span>
+                </label>
+            </div>`;
+        });
+        listEl.innerHTML = html || `<div class="modal-no-ticket"><div class="icon">🔍</div><p>${lang === 'zh' ? '找不到對應門票資訊' : 'No ticket info found'}</p></div>`;
+    }
+
+    overlay.style.display = 'block';
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTicketModal() {
+    document.getElementById('ticket-modal-overlay').style.display = 'none';
+    document.getElementById('ticket-modal').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function syncTicketCheckbox(cbId, modalCb) {
+    const original = document.getElementById(cbId);
+    if(original) {
+        original.checked = modalCb.checked;
+        // 觸發 calc
+        original.dispatchEvent(new Event('change', {bubbles: true}));
+        original.dispatchEvent(new Event('input', {bubbles: true}));
+    }
+}
+
+// 初始化：為地圖景點加上對應標記與點擊事件
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.map-item-label').forEach(label => {
+        const cb = label.querySelector('input[type="checkbox"]');
+        if(!cb) return;
+        const zh = (cb.getAttribute('data-zh') || '').trim();
+        const en = (cb.getAttribute('data-en') || '').trim();
+        // 檢查是否有對應門票
+        const hasTicket = SPOT_TICKETS[zh] || SPOT_TICKETS[en];
+        if(hasTicket) {
+            label.classList.add('has-ticket');
+            const badge = document.createElement('span');
+            badge.className = 'ticket-badge';
+            badge.setAttribute('data-zh', '🎫 門票');
+            badge.setAttribute('data-en', '🎫 Ticket');
+            badge.textContent = window.currLang === 'en' ? '🎫 Ticket' : '🎫 門票';
+            label.appendChild(badge);
+            // 點擊 label 文字區域開啟彈窗
+            label.addEventListener('click', function(e) {
+                // 不攔截 checkbox 本身的 change
+                if(e.target === cb) return;
+                e.preventDefault();
+                const lang = window.currLang || 'zh';
+                const name = lang === 'en' ? en : zh;
+                const icon = (SPOT_TICKETS[zh] || SPOT_TICKETS[en])?.icon || '🎫';
+                openTicketModal(name, icon);
+            });
+        }
+    });
+});
+</script>
+
 <div id="social-overlay"></div>
 <div id="post-submit-social">
     <h2 style="color: var(--primary); font-family: 'Playfair Display';">Thank You!</h2>
