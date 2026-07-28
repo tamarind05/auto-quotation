@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Tamarind Travel - Auto-quotation</title>
+<title>Tamarind Travel - Itinerary Reservation</title>
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-2VP8V0ZWSH"></script>
@@ -35,20 +35,31 @@ body{font-family:'Montserrat','Noto Serif TC',sans-serif;background:var(--bg);co
 .tab.active{background:var(--primary);color:#fff}
 .content{display:none}.content.active{display:block}
 .section-title{font-family:'Noto Serif TC',serif;font-size:1.1rem;margin-bottom:12px;color:var(--primary);border-left:4px solid var(--accent);padding-left:10px}
-.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 0;border-bottom:1px solid #eee5d9}
+.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 10px;border-bottom:1px solid #eee5d9;border-radius:12px;transition:background .2s, box-shadow .2s}
 .item h3{font-size:0.95rem;font-weight:600}
+.item.selectable{cursor:pointer}
+.item.selectable:hover{background:rgba(29,92,99,.05)}
+.item.selectable.active{background:rgba(29,92,99,.09);box-shadow:inset 4px 0 0 var(--primary)}
+.item.selectable.active h3{color:var(--primary)}
 .price{font-family:'Noto Serif TC',serif;font-weight:700;text-align:right;font-size:0.9rem;color:var(--muted)}
 .action{display:grid;gap:6px;align-content:center;min-width:140px} 
 input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;font-size:0.95rem}
 .qty-box{display:flex; align-items:center; gap:8px; justify-content:flex-end} 
-.qty-input{width:65px !important; text-align:center; border-color:var(--accent)}
+.qty-input{width:44px !important; text-align:center; border-color:var(--accent); padding:8px 4px}
+.stepper{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+.qty-btn{flex-shrink:0;width:34px;height:34px;border-radius:50%;border:2px solid var(--primary);background:#fff;color:var(--primary);font-size:1.2rem;font-weight:900;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.qty-btn:active{background:var(--primary);color:#fff}
+.tab-hint{font-size:0.8rem;color:var(--accent);font-weight:700;margin-bottom:8px;padding-left:2px}
+.hint-bar{background:#fdf9f2;border:1px dashed var(--accent);border-radius:12px;padding:8px 12px;font-size:0.82rem;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .summary{background:#f2ece4;border-radius:16px;padding:16px}.row{grid-template-columns:1fr; gap:4px; padding:8px 0; border-bottom:1px dashed rgba(0,0,0,.08); display:grid}
 .row-main{display:flex;justify-content:space-between;font-weight:700;color:var(--primary);font-size:0.95rem}
 .row-detail{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--muted);padding-left:8px}
 .total{margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.15);display:flex;justify-content:space-between;align-items:baseline}
 .total strong{font-size:1.5rem;font-family:'Noto Serif TC',serif;color:var(--primary)}
-.chk{display:flex;align-items:center;gap:6px;justify-content:flex-end;font-size:0.9rem;color:var(--muted);padding:8px 0;cursor:pointer}
-.chk input[type="checkbox"]{width:20px;height:20px;cursor:pointer}
+.chk{display:flex;align-items:center;gap:6px;justify-content:center;font-size:0.85rem;font-weight:700;color:var(--primary);padding:9px 14px;border:2px solid var(--line);border-radius:24px;background:#fff;cursor:pointer;min-width:80px;transition:.2s}
+.chk input[type="checkbox"]{display:none}
+.chk.is-checked{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chk.is-checked::before{content:"✓ ";font-weight:900}
 .map-section{background:#fdf9f2; border:1px solid var(--accent); border-radius:15px; padding:15px; margin-top:20px;}
 .map-title{font-size:1rem; font-weight:700; color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:5px;}
 .map-group{margin-bottom:15px;}
@@ -390,7 +401,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
                         <li>• <span data-zh="正常票 1米以上 / 免費 1米以下" data-en="Normal >1m/ Free < 1m">正常票 1米以上 / 免費 1米以下</span></li>
                     </ul>
                 </div>
-<strong style="color: var(--primary); display: block; margin-bottom: 5px;" data-zh="📝 為提供您最優質的服務，相關門票與包車費用將依淡旺季彈性調整" data-en="📝 Please note that entry fees and chartered vehicle rates will be adjusted according to seasonal demand.">📝 為提供您最優質的服務，相關門票與包車費用將依淡旺季彈性調整</strong>
+<strong style="color: var(--primary); display: block; margin-bottom: 5px;" data-zh="📝 此為行程預約單，勾選項目後送出，專人將與您確認詳細安排與報價" data-en="📝 This is a reservation form. After selecting your items and submitting, our team will confirm the detailed arrangements and pricing with you.">📝 此為行程預約單，勾選項目後送出，專人將與您確認詳細安排與報價</strong>
 
             </div>
 
@@ -410,11 +421,19 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 
   <div class="grid">
     <section class="panel menu">
+      <div class="tab-hint">
+        <span data-zh="👆 點選下方分類，切換「景點門票／包車司導／出海跳島／專業玩水」等不同服務項目" data-en="👇 Tap a tab below to switch between Tickets / Transport / Island Tour / Activities">👆 點選下方分類，切換「景點門票／包車司導／出海跳島／專業玩水」等不同服務項目</span>
+      </div>
       <div class="tabs">
         <button class="tab active" data-tab="spot" data-zh="景點門票" data-en="Tickets">景點門票</button>
         <button class="tab" data-tab="car" data-zh="包車 / 司導" data-en="Transport">包車 / 司導</button>
         <button class="tab" data-tab="boat" data-zh="出海跳島" data-en="Island Tour">出海跳島</button>
         <button class="tab" data-tab="water" data-zh="專業玩水" data-en="Activities">專業玩水</button>
+      </div>
+
+      <div class="hint-bar">
+        <span>💡</span>
+        <span data-zh="點選項目卡片或「加入」按鈕即可加入行程，再點一次可取消" data-en="Tap a card or the Add button to include it — tap again to remove it">點選項目卡片或「加入」按鈕即可加入行程，再點一次可取消</span>
       </div>
 
       <div class="content active" id="spot">
@@ -465,35 +484,35 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
             </div>
         </div>
 
-      <h2 class="section-title" data-zh="熱門景點門票 (分級計價)" data-en="Popular Tickets (Tiered)">熱門景點門票 (分級計價)</h2>
-        <div class="item"><div><h3 data-zh="套票：越南精粹秀 ＋ 泰迪熊" data-en="Combo: Quintessence + Teddy Bear">套票：越南精粹秀 ＋ 泰迪熊</h3></div><div class="action"><div class="price">450k / 340k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="精粹秀+泰迪熊" data-en="Quintessence+Teddy" data-a="450000" data-c="340000" data-s="340000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 泰迪熊" data-en="Combo: Gondola + Teddy Bear">套票：貢多拉船 ＋ 泰迪熊</h3></div><div class="action"><div class="price">300k / 225k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="貢多拉+泰迪熊" data-en="Gondola+Teddy" data-a="300000" data-c="225000" data-s="225000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 越南精粹秀" data-en="Combo: Gondola + Quintessence">套票：貢多拉船 ＋ 越南精粹秀</h3></div><div class="action"><div class="price">400k / 300k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="貢多拉+精粹秀" data-en="Gondola+Quint" data-a="400000" data-c="300000" data-s="300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="全包套票：貢多拉＋泰迪熊＋精粹秀" data-en="All-in Combo: Gondola+Teddy+Quint">全包套票：貢多拉＋泰迪熊＋精粹秀</h3></div><div class="action"><div class="price">500k / 380k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="三合一全包套票" data-en="All-in Combo" data-a="500000" data-c="380000" data-s="380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+      <h2 class="section-title" data-zh="熱門景點門票" data-en="Popular Tickets">熱門景點門票</h2>
+        <div class="item"><div><h3 data-zh="套票：越南精粹秀 ＋ 泰迪熊" data-en="Combo: Quintessence + Teddy Bear">套票：越南精粹秀 ＋ 泰迪熊</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="精粹秀+泰迪熊" data-en="Quintessence+Teddy"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 泰迪熊" data-en="Combo: Gondola + Teddy Bear">套票：貢多拉船 ＋ 泰迪熊</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="貢多拉+泰迪熊" data-en="Gondola+Teddy"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="套票：貢多拉船 ＋ 越南精粹秀" data-en="Combo: Gondola + Quintessence">套票：貢多拉船 ＋ 越南精粹秀</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="貢多拉+精粹秀" data-en="Gondola+Quint"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="全包套票：貢多拉＋泰迪熊＋精粹秀" data-en="All-in Combo: Gondola+Teddy+Quint">全包套票：貢多拉＋泰迪熊＋精粹秀</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="三合一全包套票" data-en="All-in Combo"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
-        <div class="item"><div><h3 data-zh="日落小鎮纜車來回" data-en="Cable Car Round Trip">日落小鎮纜車來回</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送親吻橋門票" data-en="🎁 Free Kiss Bridge Ticket">🎁 贈送親吻橋門票</small></div><div class="action"><div class="price">850k / 700k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="纜車來回" data-en="Cable Car" data-a="850000" data-c="700000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="纜車來回 + Buffet" data-en="Cable Car + Buffet">纜車來回 + Buffet</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送親吻橋門票" data-en="🎁 Free Kiss Bridge Ticket">🎁 贈送親吻橋門票</small></div><div class="action"><div class="price">1,150k / 900k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="纜車+Buffet" data-en="Cable+Buffet" data-a="1150000" data-c="900000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="晚餐 ＋ 海之交響曲表演" data-en="Dinner + Sea Symphony Show">晚餐 ＋ 海之交響曲表演</h3></div><div class="action"><div class="price">1,000k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="晚餐+交響曲秀" data-en="Dinner+Symphony" data-p="1000000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="點心 ＋ 海之交響曲 (沙灘)" data-en="Snack + Sea Symphony (Beach)">點心 ＋ 海之交響曲 (沙灘)</h3></div><div class="action"><div class="price">700k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="點心+交響曲(沙灘)" data-en="Snack+Symphony" data-p="700000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="雙秀組合 (海之吻 ＋ 交響曲)" data-en="Double Show (Kiss + Symphony)">雙秀組合 (海之吻 ＋ 交響曲)</h3></div><div class="action"><div class="price">1,200k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="海之吻+交響曲雙秀" data-en="Double Show" data-p="1200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="海之吻秀 (Kiss of the Sea)" data-en="Kiss of the Sea Show">海之吻秀 (Kiss of the Sea)</h3></div><div class="action"><div class="price">750k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="海之吻秀" data-en="Kiss of Sea" data-p="750000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="海之交響樂秀 (Symphony)" data-en="Sea Symphony Show">海之交響樂秀 (Symphony)</h3></div><div class="action"><div class="price">660k VND</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="show" data-zh="交響樂秀" data-en="Symphony Show" data-p="660000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="日落小鎮纜車來回" data-en="Cable Car Round Trip">日落小鎮纜車來回</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送親吻橋門票" data-en="🎁 Free Kiss Bridge Ticket">🎁 贈送親吻橋門票</small></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="纜車來回" data-en="Cable Car"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="纜車來回 + Buffet" data-en="Cable Car + Buffet">纜車來回 + Buffet</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送親吻橋門票" data-en="🎁 Free Kiss Bridge Ticket">🎁 贈送親吻橋門票</small></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="纜車+Buffet" data-en="Cable+Buffet"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="晚餐 ＋ 海之交響曲表演" data-en="Dinner + Sea Symphony Show">晚餐 ＋ 海之交響曲表演</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="晚餐+交響曲秀" data-en="Dinner+Symphony"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="點心 ＋ 海之交響曲 (沙灘)" data-en="Snack + Sea Symphony (Beach)">點心 ＋ 海之交響曲 (沙灘)</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="點心+交響曲(沙灘)" data-en="Snack+Symphony"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="雙秀組合 (海之吻 ＋ 交響曲)" data-en="Double Show (Kiss + Symphony)">雙秀組合 (海之吻 ＋ 交響曲)</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="海之吻+交響曲雙秀" data-en="Double Show"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="海之吻秀 (Kiss of the Sea)" data-en="Kiss of the Sea Show">海之吻秀 (Kiss of the Sea)</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="海之吻秀" data-en="Kiss of Sea"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="海之交響樂秀 (Symphony)" data-en="Sea Symphony Show">海之交響樂秀 (Symphony)</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="交響樂秀" data-en="Symphony Show"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
-        <div class="item"><div><h3 data-zh="珍珠樂園門票" data-en="VinWonders">珍珠樂園門票 </h3></div><div class="action"><div class="price">950k / 710k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠樂園" data-en="VinWonders" data-a="950000" data-c="710000" data-s="710000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)">珍珠一日雙園</h3></div><div class="action"><div class="price">1,500k / 1,110k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)" data-a="1500000" data-c="1110000" data-s="1100000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)">珍珠兩日雙園</h3></div><div class="action"><div class="price">1,700k / 1,300k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)" data-a="1700000" data-c="1300000" data-s="1300000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠樂園門票 + Buffet" data-en="VinWonders + Buffet">珍珠樂園門票 + Buffet</h3></div><div class="action"><div class="price">1,240k / 840k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="珍珠樂園+Buffet" data-en="VinWonders+Buffet" data-a="1240000" data-c="840000" data-s="1010000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠一日雙園 + Buffet" data-en="2-Park Combo(1 day) + Buffet">珍珠一日雙園 + Buffet</h3></div><div class="action"><div class="price">1,760k / 1,210k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="1日雙園+Buffet" data-en="2-Park+Buffet" data-a="1760000" data-c="1210000" data-s="1380000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="珍珠兩日雙園 + Buffet" data-en="2-Park Combo(2 days) + Buffet">珍珠兩日雙園 + Buffet</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送泰迪熊博物館票" data-en="🎁 Free Teddy Bear Museum">🎁 贈送泰迪熊博物館票</small></div><div class="action"><div class="price">1,950k / 1,400k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="兩日雙園 + Buffet" data-en="2-Park+Buffet" data-a="1950000" data-c="1400000" data-s="1570000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠樂園門票" data-en="VinWonders">珍珠樂園門票 </h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="珍珠樂園" data-en="VinWonders"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)">珍珠一日雙園</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="珍珠一日雙園" data-en="2-Park Combo(1 day)"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)">珍珠兩日雙園</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="珍珠兩日雙園" data-en="2-Park Combo(2 days)"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠樂園門票 + Buffet" data-en="VinWonders + Buffet">珍珠樂園門票 + Buffet</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="珍珠樂園+Buffet" data-en="VinWonders+Buffet"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠一日雙園 + Buffet" data-en="2-Park Combo(1 day) + Buffet">珍珠一日雙園 + Buffet</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="1日雙園+Buffet" data-en="2-Park+Buffet"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="珍珠兩日雙園 + Buffet" data-en="2-Park Combo(2 days) + Buffet">珍珠兩日雙園 + Buffet</h3><small style="color:var(--accent);font-weight:600;" data-zh="🎁 贈送泰迪熊博物館票" data-en="🎁 Free Teddy Bear Museum">🎁 贈送泰迪熊博物館票</small></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="兩日雙園 + Buffet" data-en="2-Park+Buffet"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         <div style="border: 2px solid var(--accent); border-radius: 12px; padding: 10px; margin: 10px 0;">
-            <div class="item" style="border-bottom: 1px dashed var(--line);"><div><h3 data-zh="海星沙灘船票" data-en="Starfish Beach Boat">海星沙灘船票</h3></div><div class="action"><div class="price">200k / 人</div><label class="chk"><input type="checkbox" id="starfishBoat" class="pick-ticket" data-mode="show" data-zh="海星沙灘船票" data-en="Starfish Boat" data-p="200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-            <div class="item" style="border-bottom: none;"><div><h3 data-zh="海星沙灘接送" data-en="Starfish Beach Van">海星沙灘接送</h3></div><div class="action"><div class="price">300k (單次)</div><label class="chk"><input type="checkbox" id="starfishVan" class="pick-car" data-zh="海星沙灘接送" data-en="Starfish Van" data-price="300000" data-fixed="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+            <div class="item" style="border-bottom: 1px dashed var(--line);"><div><h3 data-zh="海星沙灘船票" data-en="Starfish Beach Boat">海星沙灘船票</h3></div><div class="action"><label class="chk"><input type="checkbox" id="starfishBoat" class="pick-ticket" data-zh="海星沙灘船票" data-en="Starfish Boat"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+            <div class="item" style="border-bottom: none;"><div><h3 data-zh="海星沙灘接送" data-en="Starfish Beach Van">海星沙灘接送</h3></div><div class="action"><label class="chk"><input type="checkbox" id="starfishVan" class="pick-car" data-zh="海星沙灘接送" data-en="Starfish Van"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         </div>
-        <div class="item"><div><h3 data-zh="Safari 動物園門票" data-en="Vinpearl Safari Ticket">Safari 動物園門票</h3></div><div class="action"><div class="price">850k / 650k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="動物園門票" data-en="Safari Ticket" data-a="850000" data-c="650000" data-s="650000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="泰迪熊博物館" data-en="Teddy Bear Museum">泰迪熊博物館</h3></div><div class="action"><div class="price">200k / 150k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="泰迪熊" data-en="Teddy Museum" data-a="200000" data-c="150000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="威尼斯貢多拉船" data-en="Venice Gondola">威尼斯貢多拉船</h3></div><div class="action"><div class="price">200k / 150k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="貢多拉" data-en="Gondola" data-a="200000" data-c="150000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="碗公(竹簍)船" data-en="Basket Boat">碗公(竹簍)船</h3></div><div class="action"><div class="price">200k </div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="cable" data-zh="碗公(竹簍)船" data-en="Basket Boat" data-a="200000" data-c="200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="越南精粹秀" data-en="Quintessence of Vietnam">越南精粹秀</h3></div><div class="action"><div class="price">300k / 230k</div><label class="chk"><input type="checkbox" class="pick-ticket" data-mode="full" data-zh="越南精粹秀" data-en="Quint Show" data-a="300000" data-c="230000" data-s="230000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="Safari 動物園門票" data-en="Vinpearl Safari Ticket">Safari 動物園門票</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="動物園門票" data-en="Safari Ticket"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="泰迪熊博物館" data-en="Teddy Bear Museum">泰迪熊博物館</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="泰迪熊" data-en="Teddy Museum"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="威尼斯貢多拉船" data-en="Venice Gondola">威尼斯貢多拉船</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="貢多拉" data-en="Gondola"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="碗公(竹簍)船" data-en="Basket Boat">碗公(竹簍)船</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="碗公(竹簍)船" data-en="Basket Boat"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="越南精粹秀" data-en="Quintessence of Vietnam">越南精粹秀</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-ticket" data-zh="越南精粹秀" data-en="Quint Show"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
 
       </div>
 
@@ -535,29 +554,29 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
                 </div>
             </div>
         </div>
-        <div class="item"><div><h3 data-zh="豪華 7 人座" data-en="Luxury 7-Seater">豪華 7 人座</h3></div><div class="action"><div class="price">1,400k VND</div><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="豪華 7座" data-en="Luxury 7-Seater" data-price="1400000" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="尊爵商務 7 人座" data-en="Business 7-Seater">尊爵商務 7 人座</h3></div><div class="action"><div class="price">2,100k VND</div><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="商務 7座" data-en="Business 7-Seater" data-price="2100000" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="豪華保姆 10 人座" data-en="Limousine 10-Seater">豪華保姆 10 人座</h3></div><div class="action"><div class="price">1,900k VND</div><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="保姆 10座" data-en="Limo 10-Seater" data-price="1900000" data-luke="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="豪華保姆 12 人座" data-en="Limousine 12-Seater">豪華保姆 12 人座</h3></div><div class="action"><div class="price">2,500k VND</div><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="保姆 12座" data-en="Limo 12-Seater" data-price="2500000" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="舒適 16 人座" data-en="Standard 16-Seater">舒適 16 人座</h3></div><div class="action"><div class="price">1,600k VND</div><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="舒適 16座" data-en="16-Seater" data-price="1600000" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="全新 18 人座 (2026)" data-en="New 18-Seater (2026)">全新 18 人座 (2026)</h3></div><div class="action"><div class="price">2,200k VND</div><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="全新 18座" data-en="New 18-Seater" data-price="2200000" data-luke="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
-        <div class="item"><div><h3 data-zh="越南當地中文導遊" data-en="Local Chinese Guide">越南當地中文導遊</h3></div><div class="action"><div class="price">1,200k VND</div><label class="chk"><input type="checkbox" class="pick-car" data-zh="當地中文導遊" data-en="Chinese Guide" data-price="1200000"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="豪華 7 人座" data-en="Luxury 7-Seater">豪華 7 人座</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="豪華 7座" data-en="Luxury 7-Seater" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="尊爵商務 7 人座" data-en="Business 7-Seater">尊爵商務 7 人座</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="商務 7座" data-en="Business 7-Seater" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="豪華保姆 10 人座" data-en="Limousine 10-Seater">豪華保姆 10 人座</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="保姆 10座" data-en="Limo 10-Seater" data-luke="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="豪華保姆 12 人座" data-en="Limousine 12-Seater">豪華保姆 12 人座</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="保姆 12座" data-en="Limo 12-Seater" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="舒適 16 人座" data-en="Standard 16-Seater">舒適 16 人座</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="舒適 16座" data-en="16-Seater" data-luke="false"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="全新 18 人座 (2026)" data-en="New 18-Seater (2026)">全新 18 人座 (2026)</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car car-type" data-zh="全新 18座" data-en="New 18-Seater" data-luke="true"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
+        <div class="item"><div><h3 data-zh="越南當地中文導遊" data-en="Local Chinese Guide">越南當地中文導遊</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car" data-zh="當地中文導遊" data-en="Chinese Guide"><span data-zh="加入" data-en="Add">加入</span></label></div></div>
         <div style="background: #fdf6ec; border: 1px solid #f5dab1; border-radius: 12px; padding: 15px; margin-top: 15px;">
             <h4 style="color:#8a6d3b; margin-bottom:8px; font-size:0.9rem;" data-zh="台籍 Luke 專區 (擇一)" data-en="Luke Specialist (Taiwanese)">台籍 Luke 專區 (擇一)</h4>
             <div class="item" style="border-bottom: 1px dashed #f5dab1; padding: 6px 0;">
-                <div><h3 data-zh="Luke 導遊" data-en="Luke as Guide">Luke 導遊</h3></div><div class="action"><div class="price">2,200k</div><label class="chk"><input type="checkbox" class="pick-car luke-opt" data-zh="Luke 導遊" data-en="Luke Guide" data-price="2200000"><span data-zh="加入" data-en="Add">加入</span></label></div>
+                <div><h3 data-zh="Luke 導遊" data-en="Luke as Guide">Luke 導遊</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car luke-opt" data-zh="Luke 導遊" data-en="Luke Guide"><span data-zh="加入" data-en="Add">加入</span></label></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #f5dab1; padding: 6px 0;">
-                <div><h3 data-zh="Luke 司機" data-en="Luke as Driver">Luke 司機</h3></div><div class="action"><div class="price">1,200k</div><label class="chk"><input type="checkbox" class="pick-car luke-opt" id="lukeDriver" data-zh="Luke 司機" data-en="Luke Driver" data-price="1200000" disabled><span data-zh="加入" data-en="Add">加入</span></label></div>
+                <div><h3 data-zh="Luke 司機" data-en="Luke as Driver">Luke 司機</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car luke-opt" id="lukeDriver" data-zh="Luke 司機" data-en="Luke Driver" disabled><span data-zh="加入" data-en="Add">加入</span></label></div>
             </div>
             <div class="item" style="border-bottom: none; padding: 6px 0;">
-                <div><h3 data-zh="Luke 司+導" data-en="Luke Driver+Guide">Luke 司+導</h3></div><div class="action"><div class="price">2,800k</div><label class="chk"><input type="checkbox" class="pick-car luke-opt" id="lukeBoth" data-zh="Luke 司+導" data-en="Luke Both" data-price="2800000" disabled><span data-zh="加入" data-en="Add">加入</span></label></div>
+                <div><h3 data-zh="Luke 司+導" data-en="Luke Driver+Guide">Luke 司+導</h3></div><div class="action"><label class="chk"><input type="checkbox" class="pick-car luke-opt" id="lukeBoth" data-zh="Luke 司+導" data-en="Luke Both" disabled><span data-zh="加入" data-en="Add">加入</span></label></div>
             </div>
         </div>
       </div>
 
       <div class="content" id="boat">
-        <h2 class="section-title" data-zh="出海行程報價" data-en="Island Hopping Quote">出海行程報價</h2>
+        <h2 class="section-title" data-zh="出海行程預約" data-en="Island Hopping Reservation">出海行程預約</h2>
         
         <div style="background: #f0f4f7; border: 1px solid #cedbe5; border-radius: 12px; padding: 15px; margin-bottom: 15px;">
             <h4 style="color:var(--primary); margin-bottom:10px; font-size:0.95rem;" data-zh="🎣 專業深海專船釣魚 (依人數階段優惠價)" data-en="🎣 Professional Deep Sea Fishing">🎣 專業深海專船釣魚 (依人數階段優惠價)</h4>
@@ -565,20 +584,20 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
                 <div>
                     <h3 data-zh="深海釣魚 (白天) 06:00-14:00" data-en="Deep Sea Fishing (Day) 06:00-14:00">深海釣魚 (白天) 06:00-14:00</h3>
                 </div>
-                <div class="action"><div class="price" data-zh="階梯定價" data-en="Tiered Price">階梯定價</div><div class="qty-box"><input type="number" min="0" class="qty-fishing qty-input" data-zh="深海釣魚(白天)" data-en="Fishing(Day)"></div></div>
+                <div class="action"><div class="qty-box"><input type="number" min="0" class="qty-fishing qty-input" data-zh="深海釣魚(白天)" data-en="Fishing(Day)"></div></div>
             </div>
             <div class="item" style="border-bottom: none; padding: 8px 0;">
                 <div>
                     <h3 data-zh="深海釣魚 (晚上) 15:30-22:30" data-en="Deep Sea Fishing (Night) 15:30-22:30">深海釣魚 (晚上) 15:30-22:30</h3>
                 </div>
-                <div class="action"><div class="price" data-zh="階梯定價" data-en="Tiered Price">階梯定價</div><div class="qty-box"><input type="number" min="0" class="qty-fishing qty-input" data-zh="深海釣魚(晚上)" data-en="Fishing(Night)"></div></div>
+                <div class="action"><div class="qty-box"><input type="number" min="0" class="qty-fishing qty-input" data-zh="深海釣魚(晚上)" data-en="Fishing(Night)"></div></div>
             </div>
         </div>
 
         <div style="background: #f0f7f1; border: 1px solid #d4e8d6; border-radius: 12px; padding: 12px; margin-bottom: 15px;">
             <div class="item" style="border-bottom: none;">
                 <div><h3 data-zh="快艇併團 (自選人數)" data-en="Speedboat Group Tour (Manual)">快艇併團 (自選人數)</h3></div>
-                <div class="action"><div class="price">700k VND</div><div class="qty-box"><input type="number" min="0" class="qty-generic qty-input" data-zh="快艇併團" data-en="Group Speedboat" data-price="700000"></div></div>
+                <div class="action"><div class="qty-box"><input type="number" min="0" class="qty-generic qty-input" data-zh="快艇併團" data-en="Group Speedboat"></div></div>
             </div>
         </div>
         <h3 style="margin-bottom:12px; color:#2c3e50; font-size:1.2rem; font-weight:bold; border-left:4px solid #e67e22; padding-left:10px;" 
@@ -586,18 +605,18 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
     data-en="Private Boat Island Hopping-Free Lunch & Hotel Shuttle (Children 2 years old and below are excluded from headcount)">
     🚢 專屬包船跳島-免費午餐&飯店接送 <span style="font-size:0.9rem; color:#7f8c8d; font-weight:normal;">(兩歲(含)以下不需計算人數)</span>
 </h3>
-    <!-- 北部飯店接送 (起點 650萬) -->
+    <!-- 北部飯店接送 -->
 <div class="item">
     <div><h3 data-zh="北部飯店接送" data-en="Northern hotel transfer">北部飯店接送</h3></div>
     <div class="action">
-        <select class="boat-sel" data-area="北部飯店接送" data-zh-area="北部飯店接送" data-en-area="Northern hotel transfer" data-base="11500000">
+        <select class="boat-sel" data-area="北部飯店接送" data-zh-area="北部飯店接送" data-en-area="Northern hotel transfer">
             <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
-            <option value="6500000" data-pax="3">1-3位</option>
-            <option value="7500000" data-pax="5">4-5位</option>
-            <option value="8500000" data-pax="7">6-7位</option>
-            <option value="9500000" data-pax="9">8-9位</option>
-            <option value="10500000" data-pax="11">10-11位</option>
-            <option value="11500000" data-pax="12">12位</option>
+            <option value="3" data-pax="3">1-3位</option>
+            <option value="5" data-pax="5">4-5位</option>
+            <option value="7" data-pax="7">6-7位</option>
+            <option value="9" data-pax="9">8-9位</option>
+            <option value="11" data-pax="11">10-11位</option>
+            <option value="12" data-pax="12">12位</option>
             <option value="13" data-pax="13">13位</option>
             <option value="14" data-pax="14">14位</option>
             <option value="15" data-pax="15">15位</option>
@@ -610,18 +629,18 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
     </div>
 </div>
 
-<!-- 中部飯店接送 (起點 600萬) -->
+<!-- 中部飯店接送 -->
 <div class="item">
     <div><h3 data-zh="中部飯店接送" data-en="Central hotel transfer">中部飯店接送</h3></div>
     <div class="action">
-        <select class="boat-sel" data-area="中部飯店接送" data-zh-area="中部飯店接送" data-en-area="Central hotel transfer" data-base="11000000">
+        <select class="boat-sel" data-area="中部飯店接送" data-zh-area="中部飯店接送" data-en-area="Central hotel transfer">
             <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
-            <option value="6000000" data-pax="3">1-3位</option>
-            <option value="7000000" data-pax="5">4-5位</option>
-            <option value="8000000" data-pax="7">6-7位</option>
-            <option value="9000000" data-pax="9">8-9位</option>
-            <option value="10000000" data-pax="11">10-11位</option>
-            <option value="11000000" data-pax="12">12位</option>
+            <option value="3" data-pax="3">1-3位</option>
+            <option value="5" data-pax="5">4-5位</option>
+            <option value="7" data-pax="7">6-7位</option>
+            <option value="9" data-pax="9">8-9位</option>
+            <option value="11" data-pax="11">10-11位</option>
+            <option value="12" data-pax="12">12位</option>
             <option value="13" data-pax="13">13位</option>
             <option value="14" data-pax="14">14位</option>
             <option value="15" data-pax="15">15位</option>
@@ -634,18 +653,18 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
     </div>
 </div>
 
-<!-- 南部飯店接送 (起點 550萬) -->
+<!-- 南部飯店接送 -->
 <div class="item">
     <div><h3 data-zh="南部飯店接送" data-en="Southern hotel transfer">南部飯店接送</h3></div>
     <div class="action">
-        <select class="boat-sel" data-area="南部飯店接送" data-zh-area="南部飯店接送" data-en-area="Southern hotel transfer" data-base="10500000">
+        <select class="boat-sel" data-area="南部飯店接送" data-zh-area="南部飯店接送" data-en-area="Southern hotel transfer">
             <option value="0" data-zh="請選擇人數" data-en="Select Pax">請選擇人數</option>
-            <option value="5500000" data-pax="3">1-3位</option>
-            <option value="6500000" data-pax="5">4-5位</option>
-            <option value="7500000" data-pax="7">6-7位</option>
-            <option value="8500000" data-pax="9">8-9位</option>
-            <option value="9500000" data-pax="11">10-11位</option>
-            <option value="10500000" data-pax="12">12位</option>
+            <option value="3" data-pax="3">1-3位</option>
+            <option value="5" data-pax="5">4-5位</option>
+            <option value="7" data-pax="7">6-7位</option>
+            <option value="9" data-pax="9">8-9位</option>
+            <option value="11" data-pax="11">10-11位</option>
+            <option value="12" data-pax="12">12位</option>
             <option value="13" data-pax="13">13位</option>
             <option value="14" data-pax="14">14位</option>
             <option value="15" data-pax="15">15位</option>
@@ -664,32 +683,32 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
             <h4 style="color:var(--primary); margin-bottom:12px; font-size:1rem;" data-zh="🌊 自選參加人數" data-en="🌊 Select Pax Manually">🌊 自選參加人數</h4>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 10px 0;">
                 <div><h3 data-zh="水肺體驗Scuba-2淺點 (有PADI教練)" data-en="Scuba Diving-2 spots(PADI coach)">水肺體驗Scuba-2淺點 (有PADI教練)</h3></div>
-                <div class="action"><div class="price">100 USD / 人</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="水肺體驗Scuba-2淺點" data-en="Scuba Diving-2 spots" data-price="100" data-unit="usd"></div></div>
+                <div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="水肺體驗Scuba-2淺點" data-en="Scuba Diving-2 spots"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 10px 0;">
                 <div><h3 data-zh="香蕉船 (Banana Boat)" data-en="Banana Boat Ride">香蕉船 (Banana Boat)</h3></div>
-                <div class="action"><div class="price">350k VND</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="香蕉船" data-en="Banana Boat" data-price="350000"></div></div>
+                <div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="香蕉船" data-en="Banana Boat"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 6px 0;">
-                <div><h3 data-zh="海底漫步 - 體驗版" data-en="Sea Walking - Trial">海底漫步 - 體驗版</h3></div><div class="action"><div class="price">1,250k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="海底漫步-體驗" data-en="Walk-Trial" data-price="1250000"></div></div>
+                <div><h3 data-zh="海底漫步 - 體驗版" data-en="Sea Walking - Trial">海底漫步 - 體驗版</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="海底漫步-體驗" data-en="Walk-Trial"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 6px 0;">
-                <div><h3 data-zh="海底漫步 - 標準版" data-en="Sea Walking - Standard">海底漫步 - 標準版</h3></div><div class="action"><div class="price">1,550k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="海底漫步-標準" data-en="Walk-Std" data-price="1550000"></div></div>
+                <div><h3 data-zh="海底漫步 - 標準版" data-en="Sea Walking - Standard">海底漫步 - 標準版</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="海底漫步-標準" data-en="Walk-Std"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 6px 0;">
-                <div><h3 data-zh="海底漫步 - VIP版" data-en="Sea Walking - VIP">海底漫步 - VIP版</h3></div><div class="action"><div class="price">2,150k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="海底漫步-VIP" data-en="Walk-VIP" data-price="2150000"></div></div>
+                <div><h3 data-zh="海底漫步 - VIP版" data-en="Sea Walking - VIP">海底漫步 - VIP版</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="海底漫步-VIP" data-en="Walk-VIP"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 6px 0;">
-                <div><h3 data-zh="拖曳傘 (單人)" data-en="Parasailing (Single)">拖曳傘 (單人)</h3></div><div class="action"><div class="price">800k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="拖曳傘-單人" data-en="Para-Single" data-price="800000"></div></div>
+                <div><h3 data-zh="拖曳傘 (單人)" data-en="Parasailing (Single)">拖曳傘 (單人)</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="拖曳傘-單人" data-en="Para-Single"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 6px 0;">
-                <div><h3 data-zh="拖曳傘 (雙人)" data-en="Parasailing (Double)">拖曳傘 (雙人)</h3></div><div class="action"><div class="price">1,300k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="拖曳傘-雙人" data-en="Para-Double" data-price="1300000"></div></div>
+                <div><h3 data-zh="拖曳傘 (雙人)" data-en="Parasailing (Double)">拖曳傘 (雙人)</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="拖曳傘-雙人" data-en="Para-Double"></div></div>
             </div>
             <div class="item" style="border-bottom: 1px dashed #c0dadd; padding: 6px 0;">
-                <div><h3 data-zh="水上摩托車 (10分)" data-en="Jet Ski (10m)">水上摩托車 (10分)</h3></div><div class="action"><div class="price">600k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="水上摩托-10分" data-en="JetSki-10m" data-price="600000"></div></div>
+                <div><h3 data-zh="水上摩托車 (10分)" data-en="Jet Ski (10m)">水上摩托車 (10分)</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="水上摩托-10分" data-en="JetSki-10m"></div></div>
             </div>
             <div class="item" style="border-bottom: none; padding: 6px 0;">
-                <div><h3 data-zh="水上摩托車 (20分)" data-en="Jet Ski (20m)">水上摩托車 (20分)</h3></div><div class="action"><div class="price">1,000k</div><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="水上摩托-20分" data-en="JetSki-20m" data-price="1000000"></div></div>
+                <div><h3 data-zh="水上摩托車 (20分)" data-en="Jet Ski (20m)">水上摩托車 (20分)</h3></div><div class="action"><div class="qty-box"><input type="number" min="0" class="qty-water qty-input" data-zh="水上摩托-20分" data-en="JetSki-20m"></div></div>
             </div>
         </div>
       </div>
@@ -697,9 +716,9 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 
     <aside class="panel side">
       <div class="summary">
-        <h2 style="font-size:1.2rem; margin-bottom:10px;" data-zh="報價摘要(送出報價完成，請加好友諮詢&行程規劃)" data-en="Summary(Quote sent. Add us to plan your trip!)">報價摘要</h2>
+        <h2 style="font-size:1.2rem; margin-bottom:10px;" data-zh="行程預約清單(送出後，請加好友諮詢&行程規劃)" data-en="Reservation List(After submitting, add us to plan your trip!)">行程預約清單</h2>
         <div id="lines" class="small" style="max-height: 280px; overflow-y: auto;" data-zh="尚未勾選項目。" data-en="No items selected.">尚未勾選項目。</div>
-        <div class="total"><span data-zh="總金額估算" data-en="Estimated Total">總金額估算</span><strong id="sum">VND 0</strong></div>
+        <div class="total"><span data-zh="已選項目" data-en="Items Selected">已選項目</span><strong id="itemCount">0</strong></div>
       </div>
       <div class="form" style="margin-top:12px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
@@ -738,7 +757,6 @@ input,select,textarea{width:100%;padding:10px;border:1px solid var(--line);borde
 
 <script>
 let currLang = 'zh';
-const USD_RATE = 26800; 
 const tabs=document.querySelectorAll('.tab'), contents=document.querySelectorAll('.content');
 
 // GA4 事件：追蹤分頁切換
@@ -755,7 +773,7 @@ function switchLang(lang) {
     currLang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     event.target.classList.add('active');
-    document.getElementById('main-title').textContent = lang === 'zh' ? '旅行社報價系統' : 'Travel Agency Quotation System';
+    document.getElementById('main-title').textContent = lang === 'zh' ? '行程預約單' : 'Itinerary Reservation Form';
     document.querySelectorAll('[data-zh]').forEach(el => {
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') return;
         el.textContent = el.getAttribute('data-' + lang);
@@ -790,13 +808,8 @@ carCheckboxes.forEach(chk => {
 });
 lukeOpts.forEach(opt => { opt.addEventListener('change', function() { if(this.checked) lukeOpts.forEach(o => { if(o !== this) o.checked = false; }); calc(); }); });
 
-const transferPrices = {
-    "center":    { "7座": 250000, "10座Limo": 600000, "16座": 500000 },
-    "baitruong": { "7座": 200000, "10座Limo": 600000, "16座": 400000 },
-    "midNorth":  { "7座": 400000, "10座Limo": 800000, "16座": 600000 },
-    "south":     { "7座": 400000, "10座Limo": 800000, "16座": 700000 },
-    "north":     { "7座": 500000, "10座Limo": 1000000, "16座": 800000 }
-};
+// 車型清單（僅列出可選車型，不含費用）
+const carTypeList = ["7人座 (7 Seaters)", "10人 Limousine", "12人座 (12 Seaters)", "16人座 (16 Seaters)", "18人座 (18 Seaters)"];
 
 function setupTransfer(enableId, fieldsId, areaId, carId) {
     const enable = document.getElementById(enableId), fields = document.getElementById(fieldsId), area = document.getElementById(areaId), car = document.getElementById(carId);
@@ -804,15 +817,7 @@ function setupTransfer(enableId, fieldsId, areaId, carId) {
     area.addEventListener('change', () => {
         car.innerHTML = `<option value="0">${currLang==='zh'?'請選擇車型':'Select Type'}</option>`;
         if(area.value !== "0"){
-            const base = transferPrices[area.value];
-            const list = [
-                { name: "7人座 (7 Seaters)", price: base["7座"] },
-                { name: "10人 Limousine", price: base["10座Limo"] },
-                { name: "12人座 (12 Seaters)", price: base["10座Limo"] + 500000 },
-                { name: "16人座 (16 Seaters)", price: base["16座"] },
-                { name: "18人座 (18 Seaters)", price: base["10座Limo"] + 300000 }
-            ];
-            list.forEach(c => { const opt = document.createElement('option'); opt.value = c.price; opt.dataset.carName = c.name; opt.textContent = `${c.name} - VND ${c.price.toLocaleString()}`; car.appendChild(opt); });
+            carTypeList.forEach(name => { const opt = document.createElement('option'); opt.value = name; opt.dataset.carName = name; opt.textContent = name; car.appendChild(opt); });
         }
         calc();
     });
@@ -821,116 +826,62 @@ function setupTransfer(enableId, fieldsId, areaId, carId) {
 setupTransfer('enablePickup', 'pickupFields', 'pickupArea', 'pickupCar');
 setupTransfer('enableDropoff', 'dropoffFields', 'dropoffArea', 'dropoffCar');
 
+// calc()：彙整已選項目，產生「行程預約清單」(不含任何費用計算)
 function calc(){
-    // ... 保留原本 v35 的 calc() 內容 ...
-    let total=0, lines=[];
+    let lines=[];
     const a = Number(document.getElementById('paxA').value||0), c = Number(document.getElementById('paxC').value||0), s = Number(document.getElementById('paxS').value||0);
-    const d = Number(document.getElementById('days').value||1), totalPax = a + c + s;
+    const totalPax = a + c + s;
 
     document.querySelectorAll('.pick-ticket:checked').forEach(el=>{
-        let subTotal = 0, details = [];
-        const mode = el.dataset.mode, name = el.getAttribute('data-' + currLang);
-        if(mode === 'show'){
-            subTotal = totalPax * Number(el.dataset.p);
-            details.push(`<div class="row-detail"><span>${currLang==='zh'?'人數':'Pax'} x${totalPax}</span><span>VND ${subTotal.toLocaleString()}</span></div>`);
-        } else if(mode === 'cable' || mode === 'full'){
-            const prA = Number(el.dataset.a), prC = Number(el.dataset.c), prS = (mode === 'full') ? Number(el.dataset.s) : prA;
-            const costA = a * prA, costC = c * prC, costS = s * prS;
-            subTotal = costA + costC + costS;
-            if(a > 0) details.push(`<div class="row-detail"><span>${currLang==='zh'?'成人':'Adult'} x${a}</span><span>VND ${costA.toLocaleString()}</span></div>`);
-            if(s > 0) details.push(`<div class="row-detail"><span>${currLang==='zh'?'長者':'Senior'} x${s}</span><span>VND ${costS.toLocaleString()}</span></div>`);
-            if(c > 0) details.push(`<div class="row-detail"><span>${currLang==='zh'?'孩童':'Child'} x${c}</span><span>VND ${costC.toLocaleString()}</span></div>`);
-        }
-        total += subTotal;
-        lines.push(`<div class="row"><div class="row-main"><span>${name}</span><strong>VND ${subTotal.toLocaleString()}</strong></div>${details.join('')}</div>`);
+        const name = el.getAttribute('data-' + currLang);
+        lines.push(`<div class="row"><div class="row-main"><span>🎫 ${name}</span></div></div>`);
     });
 
     document.querySelectorAll('.pick-map:checked').forEach(el => {
         const name = el.getAttribute('data-' + currLang);
-        lines.push(`<div class="row"><div class="row-main"><span>📍 ${name}</span><strong>${currLang==='zh'?'(免費參考)':'(Free)'}</strong></div></div>`);
+        lines.push(`<div class="row"><div class="row-main"><span>📍 ${name}</span></div></div>`);
     });
 
     document.querySelectorAll('.pick-car:checked').forEach(el=>{
-        const isFixed = el.dataset.fixed === "true"; 
-        const sub = isFixed ? Number(el.dataset.price) : Number(el.dataset.price) * d; 
         const name = el.getAttribute('data-' + currLang);
-        total += sub;
-        lines.push(`<div class="row"><div class="row-main"><span>${name}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${isFixed ? (currLang==='zh'?'單次':'Fixed') : d+(currLang==='zh'?'天':' Days')}</span></div></div>`);
+        lines.push(`<div class="row"><div class="row-main"><span>🚐 ${name}</span></div></div>`);
     });
 
     const pickupCar = document.getElementById('pickupCar'), dropoffCar = document.getElementById('dropoffCar');
     if (document.getElementById('enablePickup').checked && pickupCar.value !== "0") {
         const area = document.getElementById('pickupArea');
         const areaText = area.options[area.selectedIndex].getAttribute('data-' + currLang);
-        const sub = Number(pickupCar.value); total += sub;
-        lines.push(`<div class="row"><div class="row-main"><span>🛫 ${currLang==='zh'?'機場接機':'Pickup'} (${areaText})</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${pickupCar.options[pickupCar.selectedIndex].dataset.carName}</span></div></div>`);
+        lines.push(`<div class="row"><div class="row-main"><span>🛫 ${currLang==='zh'?'機場接機':'Pickup'} (${areaText})</span></div><div class="row-detail"><span>${pickupCar.options[pickupCar.selectedIndex].dataset.carName}</span></div></div>`);
     }
     if (document.getElementById('enableDropoff').checked && dropoffCar.value !== "0") {
         const area = document.getElementById('dropoffArea');
         const areaText = area.options[area.selectedIndex].getAttribute('data-' + currLang);
-        const sub = Number(dropoffCar.value); total += sub;
-        lines.push(`<div class="row"><div class="row-main"><span>🛬 ${currLang==='zh'?'機場送機':'Drop-off'} (${areaText})</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${dropoffCar.options[dropoffCar.selectedIndex].dataset.carName}</span></div></div>`);
+        lines.push(`<div class="row"><div class="row-main"><span>🛬 ${currLang==='zh'?'機場送機':'Drop-off'} (${areaText})</span></div><div class="row-detail"><span>${dropoffCar.options[dropoffCar.selectedIndex].dataset.carName}</span></div></div>`);
     }
 
     document.querySelectorAll('.qty-fishing').forEach(el => {
         const fishPax = Number(el.value || 0);
         if(fishPax > 0) {
             const name = el.getAttribute('data-' + currLang);
-            let sub = 0;
-            if(fishPax <= 4) { sub = fishPax * 3000000; }
-            else if(fishPax < 7) { sub = fishPax * 2500000; }
-            else if(fishPax <= 10) { sub = fishPax * 2250000; }
-            else { sub = (10 * 2250000) + ((fishPax - 10) * 2000000); }
-            total += sub;
-            lines.push(`<div class="row"><div class="row-main"><span>${name}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${fishPax}位/Pax</span></div></div>`);
+            lines.push(`<div class="row"><div class="row-main"><span>🎣 ${name}</span></div><div class="row-detail"><span>${fishPax} ${currLang==='zh'?'位':'Pax'}</span></div></div>`);
         }
     });
 
-document.querySelectorAll('.boat-sel').forEach(sel => {
-    const val = Number(sel.value);
-    if (val > 0) {
-        let sub = 0;
-        const opt = sel.options[sel.selectedIndex];
-        const realPax = Number(opt.dataset.pax); // 實際人數
-        const base = Number(sel.dataset.base);   // 該區域 12 位的基礎船費
-        const area = sel.getAttribute('data-' + currLang + '-area');
+    document.querySelectorAll('.boat-sel').forEach(sel => {
+        const val = Number(sel.value);
+        if (val > 0) {
+            const opt = sel.options[sel.selectedIndex];
+            const realPax = Number(opt.dataset.pax);
+            const area = sel.getAttribute('data-' + currLang + '-area');
+            lines.push(`<div class="row"><div class="row-main"><span>⛵ ${area}${currLang === 'zh' ? '包船' : ' Boat'}</span></div><div class="row-detail"><span>${realPax} ${currLang==='zh'?'位':'Pax'}</span></div></div>`);
+        }
+    });
 
-        // --- 報價邏輯 ---
-        
-        // 1. 計算船費 (Boat Fee)
-        // 12位以下依照選單 value；13位以上則每人加 75萬
-        let boatBaseFee = (realPax >= 13) 
-            ? base + (realPax - 12) * 850000
-            : val;
-        
-        // 2. 計算餐費 (Meal Fee)
-        let mealFee = realPax * 150000;
-
-        // 3. 總費用 = 船費 + 餐費
-        sub = boatBaseFee + mealFee;
-
-        total += sub;
-        
-        // 渲染至結果清單
-        lines.push(`
-            <div class="row">
-                <div class="row-main">
-                    <span>${area}${currLang === 'zh' ? '包船' : ' Boat'}</span>
-                    <strong>VND ${sub.toLocaleString()}</strong>
-                </div>
-                <div class="row-detail">
-                    <span>${realPax} 位/Pax</span>
-                </div>
-            </div>
-        `);
-    }
-});
     document.querySelectorAll('.qty-generic').forEach(el=>{
         const qty = Number(el.value || 0);
         if(qty > 0){
             const name = el.getAttribute('data-' + currLang);
-            const sub = Number(el.dataset.price) * qty; total += sub;
-            lines.push(`<div class="row"><div class="row-main"><span>${name}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>x${qty}</span></div></div>`);
+            lines.push(`<div class="row"><div class="row-main"><span>${name}</span></div><div class="row-detail"><span>x${qty}</span></div></div>`);
         }
     });
 
@@ -938,16 +889,209 @@ document.querySelectorAll('.boat-sel').forEach(sel => {
         const qty = Number(el.value || 0);
         if(qty > 0){
             const name = el.getAttribute('data-' + currLang);
-            let unitPrice = Number(el.dataset.price);
-            if(el.dataset.unit === 'usd') { unitPrice *= USD_RATE; }
-            const sub = unitPrice * qty; total += sub;
-            lines.push(`<div class="row"><div class="row-main"><span>${name}</span><strong>VND ${sub.toLocaleString()}</strong></div><div class="row-detail"><span>${currLang==='zh'?'人數':'Pax'} x${qty}</span></div></div>`);
+            lines.push(`<div class="row"><div class="row-main"><span>${name}</span></div><div class="row-detail"><span>${currLang==='zh'?'人數':'Pax'} x${qty}</span></div></div>`);
         }
     });
 
     const emptyMsg = currLang === 'zh' ? '尚未勾選項目。' : 'No items selected.';
     document.getElementById('lines').innerHTML = lines.length ? lines.join('') : emptyMsg;
-    document.getElementById('sum').textContent = 'VND ' + total.toLocaleString('vi-VN');
+    document.getElementById('itemCount').textContent = lines.length;
+}
+
+// =====================================================================
+// 內部後台報價資料（僅用於送出訂單時產生給後台/LINE的完整費用明細，
+// 不會顯示在客戶看到的頁面上）
+// =====================================================================
+const BACKEND_USD_RATE = 26800;
+
+const PRICING_TICKETS = {
+    "精粹秀+泰迪熊":     { mode: "full", a: 450000,  c: 340000,  s: 340000 },
+    "貢多拉+泰迪熊":     { mode: "full", a: 300000,  c: 225000,  s: 225000 },
+    "貢多拉+精粹秀":     { mode: "full", a: 400000,  c: 300000,  s: 300000 },
+    "三合一全包套票":    { mode: "full", a: 500000,  c: 380000,  s: 380000 },
+    "纜車來回":          { mode: "cable", a: 850000,  c: 700000 },
+    "纜車+Buffet":       { mode: "cable", a: 1150000, c: 900000 },
+    "晚餐+交響曲秀":     { mode: "show", p: 1000000 },
+    "點心+交響曲(沙灘)": { mode: "show", p: 700000 },
+    "海之吻+交響曲雙秀": { mode: "show", p: 1200000 },
+    "海之吻秀":          { mode: "show", p: 750000 },
+    "交響樂秀":          { mode: "show", p: 660000 },
+    "珍珠樂園":          { mode: "full", a: 950000,  c: 710000,  s: 710000 },
+    "珍珠一日雙園":      { mode: "full", a: 1500000, c: 1110000, s: 1100000 },
+    "珍珠兩日雙園":      { mode: "full", a: 1700000, c: 1300000, s: 1300000 },
+    "珍珠樂園+Buffet":   { mode: "full", a: 1240000, c: 840000,  s: 1010000 },
+    "1日雙園+Buffet":    { mode: "full", a: 1760000, c: 1210000, s: 1380000 },
+    "兩日雙園 + Buffet": { mode: "full", a: 1950000, c: 1400000, s: 1570000 },
+    "海星沙灘船票":      { mode: "show", p: 300000 },
+    "動物園門票":        { mode: "full", a: 850000,  c: 650000,  s: 650000 },
+    "泰迪熊":            { mode: "cable", a: 200000,  c: 150000 },
+    "貢多拉":            { mode: "cable", a: 200000,  c: 150000 },
+    "碗公(竹簍)船":      { mode: "cable", a: 200000,  c: 200000 },
+    "越南精粹秀":        { mode: "full", a: 300000,  c: 230000,  s: 230000 }
+};
+
+const PRICING_CARS = {
+    "海星沙灘接送": { price: 300000, fixed: true },
+    "豪華 7座":     { price: 1400000 },
+    "商務 7座":     { price: 2100000 },
+    "保姆 10座":    { price: 2200000 },
+    "保姆 12座":    { price: 2500000 },
+    "舒適 16座":    { price: 1600000 },
+    "全新 18座":    { price: 2200000 },
+    "當地中文導遊": { price: 1200000 },
+    "Luke 導遊":    { price: 2200000 },
+    "Luke 司機":    { price: 1200000 },
+    "Luke 司+導":   { price: 2800000 }
+};
+
+const PRICING_QTY = {
+    "快艇併團":            { price: 700000 },
+    "水肺體驗Scuba-2淺點": { price: 100, unit: "usd" },
+    "香蕉船":              { price: 350000 },
+    "海底漫步-體驗":       { price: 1250000 },
+    "海底漫步-標準":       { price: 1550000 },
+    "海底漫步-VIP":        { price: 2150000 },
+    "拖曳傘-單人":         { price: 800000 },
+    "拖曳傘-雙人":         { price: 1300000 },
+    "水上摩托-10分":       { price: 600000 },
+    "水上摩托-20分":       { price: 1000000 }
+};
+
+const BACKEND_TRANSFER_PRICES = {
+    "center":    { "7座": 250000, "10座Limo": 600000, "16座": 500000 },
+    "baitruong": { "7座": 200000, "10座Limo": 600000, "16座": 400000 },
+    "midNorth":  { "7座": 400000, "10座Limo": 800000, "16座": 600000 },
+    "south":     { "7座": 400000, "10座Limo": 800000, "16座": 700000 },
+    "north":     { "7座": 500000, "10座Limo": 1000000, "16座": 800000 }
+};
+function backendTransferFee(areaKey, carName) {
+    const base = BACKEND_TRANSFER_PRICES[areaKey];
+    if (!base) return 0;
+    if (carName === "7人座 (7 Seaters)") return base["7座"];
+    if (carName === "10人 Limousine") return base["10座Limo"];
+    if (carName === "12人座 (12 Seaters)") return base["10座Limo"] + 500000;
+    if (carName === "16人座 (16 Seaters)") return base["16座"];
+    if (carName === "18人座 (18 Seaters)") return base["10座Limo"] + 300000;
+    return 0;
+}
+
+function backendFishingFee(pax) {
+    if (pax <= 4) return pax * 3000000;
+    if (pax < 7) return pax * 2500000;
+    if (pax <= 10) return pax * 2250000;
+    return (10 * 2250000) + ((pax - 10) * 2000000);
+}
+
+const BOAT_BASE = { "北部飯店接送": 11500000, "中部飯店接送": 11000000, "南部飯店接送": 10500000 };
+const BOAT_TIER = {
+    "北部飯店接送": {3:6500000, 5:7500000, 7:8500000, 9:9500000, 11:10500000, 12:11500000},
+    "中部飯店接送": {3:6000000, 5:7000000, 7:8000000, 9:9000000, 11:10000000, 12:11000000},
+    "南部飯店接送": {3:5500000, 5:6500000, 7:7500000, 9:8500000, 11:9500000, 12:10500000}
+};
+function backendBoatFee(area, realPax) {
+    const base = BOAT_BASE[area] || 0;
+    const boatBaseFee = (realPax >= 13) ? base + (realPax - 12) * 850000 : (BOAT_TIER[area]?.[realPax] || 0);
+    const mealFee = realPax * 150000;
+    return boatBaseFee + mealFee;
+}
+
+// 產生給後台/LINE的完整項目 + 費用明細（僅在送出訂單時執行一次）
+function buildBackendCostBreakdown() {
+    let total = 0, lines = [];
+    const a = Number(document.getElementById('paxA').value||0), c = Number(document.getElementById('paxC').value||0), s = Number(document.getElementById('paxS').value||0);
+    const totalPax = a + c + s;
+
+    document.querySelectorAll('.pick-ticket:checked').forEach(el => {
+        const key = el.dataset.zh, info = PRICING_TICKETS[key];
+        const name = el.getAttribute('data-zh');
+        if (!info) { lines.push(`🎫 ${name}：VND 0（未設定價格，請人工確認）`); return; }
+        let sub = 0;
+        if (info.mode === 'show') {
+            sub = totalPax * info.p;
+            lines.push(`🎫 ${name} x${totalPax}人：VND ${sub.toLocaleString()}`);
+        } else {
+            const prS = (info.mode === 'full') ? info.s : info.a;
+            const costA = a * info.a, costC = c * info.c, costS = s * prS;
+            sub = costA + costC + costS;
+            lines.push(`🎫 ${name}（成人x${a}/長者x${s}/孩童x${c}）：VND ${sub.toLocaleString()}`);
+        }
+        total += sub;
+    });
+
+    document.querySelectorAll('.pick-map:checked').forEach(el => {
+        lines.push(`📍 ${el.getAttribute('data-zh')}（參考景點，免費）`);
+    });
+
+    document.querySelectorAll('.pick-car:checked').forEach(el => {
+        const key = el.dataset.zh, info = PRICING_CARS[key];
+        const name = el.getAttribute('data-zh');
+        if (!info) { lines.push(`🚐 ${name}：VND 0（未設定價格，請人工確認）`); return; }
+        const d = Number(document.getElementById('days').value || 1);
+        const sub = info.fixed ? info.price : info.price * d;
+        total += sub;
+        lines.push(`🚐 ${name}${info.fixed ? '（單次）' : `（${d}天）`}：VND ${sub.toLocaleString()}`);
+    });
+
+    const pickupCar = document.getElementById('pickupCar'), dropoffCar = document.getElementById('dropoffCar');
+    if (document.getElementById('enablePickup').checked && pickupCar.value !== "0") {
+        const area = document.getElementById('pickupArea');
+        const areaKey = area.value, areaText = area.options[area.selectedIndex].getAttribute('data-zh');
+        const carName = pickupCar.options[pickupCar.selectedIndex].dataset.carName;
+        const sub = backendTransferFee(areaKey, carName);
+        total += sub;
+        lines.push(`🛫 機場接機 (${areaText} / ${carName})：VND ${sub.toLocaleString()}`);
+    }
+    if (document.getElementById('enableDropoff').checked && dropoffCar.value !== "0") {
+        const area = document.getElementById('dropoffArea');
+        const areaKey = area.value, areaText = area.options[area.selectedIndex].getAttribute('data-zh');
+        const carName = dropoffCar.options[dropoffCar.selectedIndex].dataset.carName;
+        const sub = backendTransferFee(areaKey, carName);
+        total += sub;
+        lines.push(`🛬 機場送機 (${areaText} / ${carName})：VND ${sub.toLocaleString()}`);
+    }
+
+    document.querySelectorAll('.qty-fishing').forEach(el => {
+        const pax = Number(el.value || 0);
+        if (pax > 0) {
+            const sub = backendFishingFee(pax);
+            total += sub;
+            lines.push(`🎣 ${el.getAttribute('data-zh')} x${pax}位：VND ${sub.toLocaleString()}`);
+        }
+    });
+
+    document.querySelectorAll('.boat-sel').forEach(sel => {
+        const realPax = Number(sel.value);
+        if (realPax > 0) {
+            const area = sel.getAttribute('data-zh-area');
+            const sub = backendBoatFee(area, realPax);
+            total += sub;
+            lines.push(`⛵ ${area}包船 x${realPax}位：VND ${sub.toLocaleString()}`);
+        }
+    });
+
+    document.querySelectorAll('.qty-generic').forEach(el => {
+        const qty = Number(el.value || 0);
+        if (qty > 0) {
+            const info = PRICING_QTY[el.dataset.zh] || { price: 0 };
+            const sub = info.price * qty;
+            total += sub;
+            lines.push(`${el.getAttribute('data-zh')} x${qty}：VND ${sub.toLocaleString()}`);
+        }
+    });
+
+    document.querySelectorAll('.qty-water').forEach(el => {
+        const qty = Number(el.value || 0);
+        if (qty > 0) {
+            const info = PRICING_QTY[el.dataset.zh] || { price: 0 };
+            let unitPrice = info.price;
+            if (info.unit === 'usd') unitPrice *= BACKEND_USD_RATE;
+            const sub = unitPrice * qty;
+            total += sub;
+            lines.push(`${el.getAttribute('data-zh')} x${qty}人：VND ${sub.toLocaleString()}`);
+        }
+    });
+
+    return { lines, total };
 }
 
 // --- ✨ 惡意攻擊防護與冷卻機制 ✨ ---
@@ -962,7 +1106,7 @@ const initTimer = setInterval(() => {
         clearInterval(initTimer);
         unlockBtn();
     } else {
-        btnText.textContent = currLang === 'zh' ? `送出報價單進行正式預約(如無法點擊，請重整頁面) (${initSec}s)` : `Generate & Send(Please refresh if link fails)(${initSec}s)`;
+        btnText.textContent = currLang === 'zh' ? `送出行程預約單(如無法點擊，請重整頁面) (${initSec}s)` : `Send Reservation(Please refresh if link fails)(${initSec}s)`;
     }
 }, 1000);
 
@@ -970,7 +1114,7 @@ function unlockBtn() {
     submitBtn.disabled = false;
     submitBtn.style.background = 'var(--primary)';
     submitBtn.style.cursor = 'pointer';
-    btnText.textContent = currLang === 'zh' ? '送出報價單進行正式預約(如無法點擊，請重整頁面)' : 'Generate & Send(Please refresh if link fails)';
+    btnText.textContent = currLang === 'zh' ? '送出行程預約單(如無法點擊，請重整頁面)' : 'Send Reservation(Please refresh if link fails)';
 }
 
 function lockBtn(seconds) {
@@ -998,8 +1142,8 @@ submitBtn.onclick = function() {
     }
 
     // GA4 追蹤點擊
-    gtag('event', 'generate_quote_submit', {
-        'quote_total': document.getElementById('sum').textContent,
+    gtag('event', 'generate_reservation_submit', {
+        'item_count': document.getElementById('itemCount').textContent,
         'customer_name': name
     });
 
@@ -1023,17 +1167,16 @@ params.append('paxA', document.getElementById('paxA').value);
 params.append('paxC', document.getElementById('paxC').value);
 params.append('paxS', document.getElementById('paxS').value);
 params.append('paxFree', document.getElementById('paxFree').value);
-params.append('total', document.getElementById('sum').textContent);
+params.append('itemCount', document.getElementById('itemCount').textContent);
 params.append('note', document.getElementById('note').value);
 
-let detailItems = [];
-document.querySelectorAll('#lines > div').forEach(item => { 
-    let text = item.innerText.replace(/\n/g, ' ').trim(); 
-    if (text) detailItems.push(text); 
-});
-
-// 這裡我們把摘要清單傳給 details 欄位
-params.append('details', detailItems.join('\n'));
+// 產生完整「項目 + 費用」明細給後台/LINE（前台頁面本身不顯示金額）
+const backendQuote = buildBackendCostBreakdown();
+const detailsText = backendQuote.lines.length
+    ? backendQuote.lines.join('\n') + `\n------------------------\n總金額估算：VND ${backendQuote.total.toLocaleString('vi-VN')}`
+    : '尚未勾選任何項目';
+params.append('details', detailsText);
+params.append('total', 'VND ' + backendQuote.total.toLocaleString('vi-VN'));
 
 fetch(gasUrl, { 
     method: 'POST', 
@@ -1180,16 +1323,13 @@ function openTicketModal(spotName, icon) {
             if(!cb) return;
             const item = cb.closest('.item');
             const h3 = item?.querySelector('h3');
-            const priceEl = item?.querySelector('.price');
             const displayName = h3 ? (lang === 'zh' ? (h3.getAttribute('data-zh') || h3.textContent.trim()) : (h3.getAttribute('data-en') || h3.textContent.trim())) : tName;
-            const price = priceEl ? priceEl.textContent.trim() : '';
             const checked = cb.checked ? 'checked' : '';
             const cbId = cb.id || ('modal-cb-' + Math.random().toString(36).substr(2,6));
             if(!cb.id) cb.id = cbId;
             html += `
             <div class="modal-ticket-item">
                 <div class="t-name">${displayName}</div>
-                <div class="t-price">${price}</div>
                 <label class="t-add">
                     <input type="checkbox" ${checked} onchange="syncTicketCheckbox('${cbId}', this)" >
                     <span>${lang === 'zh' ? '加入' : 'Add'}</span>
@@ -1255,7 +1395,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="social-overlay"></div>
 <div id="post-submit-social">
     <h2 style="color: var(--primary); font-family: 'Playfair Display';">Thank You!</h2>
-    <p style="margin-top: 10px; color: var(--text); font-weight: 600;">報價單已成功送出</p>
+    <p style="margin-top: 10px; color: var(--text); font-weight: 600;">預約單已成功送出</p>
     <p style="font-size: 0.85rem; color: var(--muted); margin-top: 5px;">請加入下方任一通訊軟體，<br>我們將由專人立即為您確認行程。</p>
     
     <div class="social-flex">
@@ -1272,5 +1412,60 @@ document.addEventListener('DOMContentLoaded', function() {
     
     <button onclick="location.reload()" style="background: none; border: 1px solid #ccc; color: #999; padding: 5px 15px; border-radius: 20px; font-size: 12px; cursor: pointer;">返回網頁</button>
 </div>
+
+<script>
+// ===== 簡化選擇體驗：整張卡片可點選、數量改為加減按鈕 =====
+document.addEventListener('DOMContentLoaded', function() {
+
+    // 1. 讓整個項目卡片可點擊切換選取狀態（不只是「加入」按鈕）
+    document.querySelectorAll('.item').forEach(item => {
+        const cb = item.querySelector('input.pick-ticket, input.pick-car, input.pick-map');
+        if(!cb) return;
+        item.classList.add('selectable');
+        const label = item.querySelector('.chk');
+
+        function syncState() {
+            item.classList.toggle('active', cb.checked);
+            if(label) label.classList.toggle('is-checked', cb.checked);
+        }
+        syncState();
+        cb.addEventListener('change', syncState);
+
+        item.addEventListener('click', function(e) {
+            if(e.target.closest('label.chk')) return; // 「加入」按鈕本身已能切換，避免重複觸發
+            if(cb.disabled) return;
+            cb.checked = !cb.checked;
+            cb.dispatchEvent(new Event('change', {bubbles:true}));
+            cb.dispatchEvent(new Event('input', {bubbles:true}));
+        });
+    });
+
+    // 2. 把所有數字輸入框（人數、天數、票數）改成加減按鈕，方便手機點選
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+        const min = Number(input.min) || 0;
+        const wrap = document.createElement('div');
+        wrap.className = 'stepper';
+        input.parentNode.insertBefore(wrap, input);
+
+        const minusBtn = document.createElement('button');
+        minusBtn.type = 'button'; minusBtn.className = 'qty-btn qty-minus'; minusBtn.textContent = '−';
+        const plusBtn = document.createElement('button');
+        plusBtn.type = 'button'; plusBtn.className = 'qty-btn qty-plus'; plusBtn.textContent = '+';
+
+        wrap.appendChild(minusBtn);
+        wrap.appendChild(input);
+        wrap.appendChild(plusBtn);
+
+        minusBtn.addEventListener('click', () => {
+            input.value = Math.max(min, (Number(input.value) || 0) - 1);
+            input.dispatchEvent(new Event('input', {bubbles:true}));
+        });
+        plusBtn.addEventListener('click', () => {
+            input.value = (Number(input.value) || 0) + 1;
+            input.dispatchEvent(new Event('input', {bubbles:true}));
+        });
+    });
+});
+</script>
 </body>
 </html>
